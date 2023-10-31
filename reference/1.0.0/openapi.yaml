@@ -1,371 +1,3630 @@
-################################################################################
-# Copyrights © 2021-2022 Fiserv, Inc. or its affiliates. 
-# Fiserv is a trademark of Fiserv, Inc., 
-# registered or used in the United States and foreign countries, 
-# and may or may not be registered in your country.  
-# All trademarks, service marks, 
-# and trade names referenced in this 
-# material are the property of their 
-# respective owners. This work, including its contents 
-# and programming, is confidential and its use 
-# is strictly limited. This work is furnished only 
-# for use by duly authorized licensees of Fiserv, Inc. 
-# or its affiliates, and their designated agents 
-# or employees responsible for installation or 
-# operation of the products. Any other use, 
-# duplication, or dissemination without the 
-# prior written consent of Fiserv, Inc. 
-# or its affiliates is strictly prohibited. 
-# Except as specified by the agreement under 
-# which the materials are furnished, Fiserv, Inc. 
-# and its affiliates do not accept any liabilities 
-# with respect to the information contained herein 
-# and are not responsible for any direct, indirect, 
-# special, consequential or exemplary damages 
-# resulting from the use of this information. 
-# No warranties, either express or implied, 
-# are granted or extended by this work or 
-# the delivery of this work
-################################################################################
-
-openapi: 3.0.2
+openapi: 3.0.1
 info:
-  title: Dev Portal Tenant APIs.
-  description: To onboard properly into the Fiserv Developer Studio as a tenant each
-    product must support these APIs so that we can retrieve product specific API specifications
-    and documentation.
-  version: 1.0.0
+  title: Fraud Mitigation
+  description: Fraud Mitigation Score provides real time fraud protection through a customized scoring engine. Decisions are rendered within the authorization flow which eliminates the need for additional development time for merchants.
+  version: v0
 servers:
-  - url: https://tenants.fiserv.com/
+  - url: http://localhost:5030
+    description: Generated server url
+tags:
+  - name: Aurus Exec services
+    description: Aurus Exec services
 paths:
-  /v1/products:
-    get:
-      tags:
-        - Tenant
-      x-group-name: Tenant
-      x-proxy-name: products
-      summary: Returns tenant provider API.
-      operationId: TenantProviderID
-      responses:
-        200:
-          description: Tenant provider response. <a href="https://fiserv.com" rel="noopener noreferrer" target="_blank">external link</a> <a href="../docs?path=docs/getting-started/setup-tenant/setup-tenant.md">Setup Tenant</a>
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TenantProviderResponse'
-            text/yaml:
-              schema:
-                $ref: '#/components/schemas/TenantProviderResponse'
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/TenantProviderResponse'
-  /v1/apis:
+  /fraudVAS/exec/Aurus/pre-evaluate/{routingType}/{clientID}:
     post:
       tags:
-        - Specs
-      x-group-name: Specs
-      x-proxy-name: apis
-      summary: Returns OpenAPI Spec.
-      operationId: APISpecProviderId
+        - Aurus Exec services
+      operationId: preEvaluateAurus
+      parameters:
+        - name: clientID
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: routingType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - mid
+              - clientID
       requestBody:
-        description: Filter Request
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SpecsFilterRequest'
-        required: false
+              $ref: '#/components/schemas/FraudVASRequest'
+        required: true
       responses:
-        200:
-          description: ""
-          content: {}
-      x-codegen-request-body-name: Body
-  /v1/docs:
-    get:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+  /fraudVAS/exec/Aurus/post-evaluate/{routingType}/{clientID}:
+    post:
       tags:
-        - Documents
-      x-group-name: Documents
-      x-proxy-name: docs
-      summary: Returns Docs in markdown format.
-      operationId: DocsAPIId
+        - Aurus Exec services
+      operationId: postEvaluateAurus
       parameters:
-        - in: query
-          name: path
+        - name: clientID
+          in: path
+          required: true
           schema:
             type: string
+        - name: routingType
+          in: path
           required: true
-          description: Markdown document path
+          schema:
+            type: string
+            enum:
+              - mid
+              - clientID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FraudVASRequest'
+        required: true
       responses:
-        200:
-          description: ""
-          content: {}
-      x-codegen-request-body-name: Body
-  /v1/layouts:
-    get:
-      tags:
-        - Layout
-      x-group-name: Layout
-      x-proxy-name: layouts
-      summary: Returns the product page layout.
-      operationId: LayoutAPIId
-      responses:
-        200:
-          description: This text will appear as description of your response body.
+        '200':
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PageLayoutResponse'
-            text/yaml:
-              schema:
-                $ref: '#/components/schemas/PageLayoutResponse'
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/PageLayoutResponse'
-  /live:
-    get:
-      tags:
-        - HealthCheck
-      x-group-name: HealthCheck
-      x-proxy-name: live
-      summary: Health check probes.
-      operationId: healthCheckId
-      x-links: 
-        link1: 
-          description: Developer Studio
-          flag: external
-          url:  'https://dev-developerstudio.fiserv.com/'
-        link2: 
-          description: Setup tenant
-          flag: internal
-          url:  '../docs?path=docs/getting-started/setup-tenant/setup-tenant.md'
-        link3: 
-          description: Fiserv Portal
-          flag: external
-          url:  'https://fiserv.com'
-      responses:
-        200:
-          description: Health check.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LiveProbeResponse'
-  
+                type: string
 components:
   schemas:
-    LiveProbeResponse:
+    Additional3DS:
       type: object
       properties:
-        message:
+        dfReferenceId:
           type: string
-          description: Message
-    PageLayoutResponse:
-      type: array
-      items:
-        type: object
-        properties:
-          hero:
-            type: array
-            items:
-              type: object
-              properties:
-                descrption:
-                  type: string
-                  description: Descrption
-                image:
-                  type: string
-                  description: Image
-            description: Hero
-          journey Cards:
-            type: array
-            items:
-              type: object
-              properties:
-                journeyCard:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      contextualNavigationCards:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            contextualNavigationCard:
-                              type: array
-                              items:
-                                type: object
-                                properties:
-                                  description:
-                                    type: string
-                                    description: Description
-                                  link:
-                                    type: array
-                                    items:
-                                      type: object
-                                      properties:
-                                        type:
-                                          type: string
-                                          description: Type
-                                        uri:
-                                          type: string
-                                          description: URI
-                                    description: Link
-                                  title:
-                                    type: string
-                                    description: Title
-                              description: ContextualNavigationCard
-                        description: ContextualNavigationCards
-                      description:
-                        type: string
-                        description: Description
-                      link:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            type:
-                              type: string
-                              description: Type
-                            uri:
-                              type: string
-                              description: URI
-                        description: Link
-                      title:
-                        type: string
-                        description: Title
-                  description: JourneyCard
-            description: JourneyCards
-    SpecsFilterRequest:
+          description: Reference Id that relates to the device data that was previously collected. DFreferenceId is generated as part of the Device Data Collection call.
+          example: qwpamdgertsf
+        apiVersion:
+          type: string
+          description: Application message identifier. Cardinal specific.
+          example: '1.7'
+        transactionMode:
+          type: string
+          description: Transaction mode identifier. Identifies the channel the transaction originates from.
+          example: MOTO
+          enum:
+            - MOTO
+            - Mobile
+            - Retail
+            - Computer
+            - Tablet
+        transactionCountDay:
+          type: integer
+          description: Number of transactions (successful or abandoned) for this cardholder account within the last 24 hours.
+          format: int32
+          example: 10
+        transactionCountSixMonths:
+          type: integer
+          description: Number of purchases with this cardholder account during the previous six months.
+          format: int32
+          example: 10
+        transactionCountYear:
+          type: integer
+          description: Number of purchases with this cardholder account during the previous year.
+          format: int32
+          example: 10
+        merchantReferenceNumber:
+          type: string
+          description: Merchant specified data.
+          example: '53127823'
+        cardType:
+          type: string
+          description: International network.
+          example: MAE
+          enum:
+            - UNKNOWN
+            - VISA
+            - MASTERCARD
+            - AMEX
+            - DISCOVER
+            - CUP
+            - DINERS
+            - JCB
+            - PRIVATE
+            - CARTEBLANCHE
+            - ENROUTE
+            - JAL
+            - CARTEBLEUE
+            - DANKORT
+            - CARTASI
+            - ENCODEDACCT
+            - UATP
+            - MAESTROINTL
+            - CARTES
+            - ELO
+            - INTERBANK
+            - EFTPOS
+            - VISADELTA
+            - VISAELECTRON
+            - MAESTROUK
+        recurringIndicator:
+          type: string
+          description: Indicates the type of Authentication request.
+          example: OneTime
+          enum:
+            - OneTime
+            - Recurring
+            - Installment
+            - CardOnFile
+            - Deferred
+        reorderIndicator:
+          type: string
+          description: Indicates whether the cardholder is reordering previously purchased merchandise.
+          example: FirstTime
+          enum:
+            - FirstTime
+            - Reorder
+        preorderIndicator:
+          type: string
+          description: Indicates whether cardholder is placing an order with a future availability or release date.
+          example: Future
+          enum:
+            - Available
+            - Future
+        preorderDate:
+          type: string
+          description: Expected date that a pre-ordered purchase will be available. YYYYMMDD
+          example: '20220901'
+        authenticationIndicatorInitiator:
+          type: string
+          enum:
+            - MERCHANT
+            - CARD_HOLDER
+        authenticationIndicatorSequence:
+          type: string
+          enum:
+            - FIRST
+            - SUBSEQUENT
+            - SINGLE
+        authenticationIndicatorBillPaymentType:
+          type: string
+          enum:
+            - SINGLE
+            - RECURRING
+            - INSTALLMENT
+            - DEFERRED
+        giftCardAmount:
+          type: number
+          description: The purchase amount total for prepaid gift cards in major units.
+          format: double
+          example: 0
+        giftCardCurrency:
+          type: string
+          description: ISO 4217 currency code for the gift card purchased.
+          example: USD
+          enum:
+            - Unknown
+            - USD
+            - AFN
+            - DZD
+            - ARS
+            - AMD
+            - AWG
+            - AUD
+            - AZN
+            - BSD
+            - BHD
+            - THB
+            - PAB
+            - BBD
+            - BYR
+            - BZD
+            - BMD
+            - VEF
+            - BOB
+            - BRL
+            - BND
+            - BGN
+            - BIF
+            - CAD
+            - CVE
+            - KYD
+            - XOF
+            - XAF
+            - XPF
+            - CLP
+            - COP
+            - KMF
+            - BAM
+            - NIO
+            - CRC
+            - HRK
+            - CUP
+            - CZK
+            - GMD
+            - DKK
+            - MKD
+            - DJF
+            - STD
+            - DOP
+            - VND
+            - XCD
+            - EGP
+            - SVC
+            - ETB
+            - EUR
+            - FKP
+            - FJD
+            - HUF
+            - CDF
+            - GHS
+            - GIP
+            - HTG
+            - PYG
+            - GNF
+            - GWP
+            - GYD
+            - HKD
+            - UAH
+            - ISK
+            - INR
+            - IRR
+            - IQD
+            - JMD
+            - JOD
+            - KES
+            - PGK
+            - LAK
+            - KWD
+            - MWK
+            - ZMK
+            - AOA
+            - MMK
+            - GEL
+            - LVL
+            - LBP
+            - ALL
+            - HNL
+            - SLL
+            - LRD
+            - LYD
+            - SZL
+            - LTL
+            - LSL
+            - MGA
+            - MYR
+            - MUR
+            - MZN
+            - MXN
+            - MXV
+            - MDL
+            - MAD
+            - BOV
+            - NGN
+            - ERN
+            - NAD
+            - NPR
+            - ANG
+            - ILS
+            - RON
+            - TWD
+            - TRY
+            - NZD
+            - BTN
+            - KPW
+            - NOK
+            - PEN
+            - MRO
+            - TOP
+            - PKR
+            - MOP
+            - UYU
+            - PHP
+            - GBP
+            - BWP
+            - QAR
+            - GTQ
+            - ZAR
+            - OMR
+            - KHR
+            - MVR
+            - IDR
+            - RUB
+            - RWF
+            - SHP
+            - SAR
+            - XDR
+            - RSD
+            - SCR
+            - SGD
+            - SBD
+            - KGS
+            - SOS
+            - TJS
+            - LKR
+            - SDG
+            - SRD
+            - SEK
+            - CHF
+            - SYP
+            - BDT
+            - WST
+            - TZS
+            - KZT
+            - TTD
+            - MNT
+            - TND
+            - AED
+            - UGX
+            - COU
+            - CLF
+            - UYI
+            - USN
+            - USS
+            - UZS
+            - VUV
+            - CHE
+            - CHW
+            - KRW
+            - YER
+            - JPY
+            - CNY
+            - PLN
+            - XBA
+            - XTS
+            - XBB
+            - XBD
+            - XBC
+            - XAU
+            - XPD
+            - XPT
+            - XAG
+            - XXX
+            - XFU
+            - TMT
+            - ZWL
+            - CUC
+            - SSP
+            - XUA
+            - XSU
+            - BYN
+            - VES
+            - ZMW
+            - MRU
+            - STN
+            - SLE
+            - VED
+            - UYW
+        giftCardCount:
+          type: integer
+          description: Total count of individual prepaid gift cards purchased. The value passed in should be exactly 2-digit numeric.
+          format: int32
+          example: 10
+        accountAgeIndicator:
+          type: string
+          description: Length of time cardholder has had account.
+          example: LessThanThirtyDays
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        accountChangeIndicator:
+          type: string
+          description: Length of time since the last change to the cardholder account. This includes shipping address, new payment account or new user added.
+          example: LessThanThirtyDays
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        accountChangeDate:
+          type: integer
+          description: Date the cardholder's account was last changed.
+          format: int64
+          example: 20220901
+        accountPasswordChangeIndicator:
+          type: string
+          description: Length of time since the cardholder changed or reset the password on the account.
+          example: LessThanThirtyDays
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        accountPasswordChangeDate:
+          type: integer
+          description: Date the cardholder last changed or reset password on account.
+          format: int64
+          example: 20220901
+        addCardAttempts:
+          type: integer
+          description: Number of add card attempts in the last 24 hours.
+          format: int32
+          example: 10
+        merchantObservedFraud:
+          type: boolean
+          description: Indicates whether the merchant experienced suspicious activity (including previous fraud) on the account.
+          example: false
+        paymentAccountIndicator:
+          type: string
+          description: Indicates the length of time that the payment account was enrolled in the merchant account.
+          example: MoreThanSixtyDays
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        paymentAccountChangeDate:
+          type: integer
+          description: Date the payment account was added to the cardholder account.
+          format: int64
+          example: 20220901
+        shippingAddressUsageIndicator:
+          type: string
+          description: Indicates when the shipping address used for transaction was first used.
+          example: MoreThanSixtyDays
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        shippingMethodIndicator:
+          type: string
+          description: Indicates shipping method chosen for the transaction.
+          example: '01'
+          enum:
+            - SHIP_TO_CARDHOLDER
+            - SHIP_TO_VERIFIED_ADDRESS
+            - SHIP_TO_NON_BILLING_ADDRESS
+            - SHIP_TO_STORE
+            - ELECTRONIC
+            - NOT_SHIPPED
+            - OTHER
+        shippingTimeframe:
+          type: string
+          description: Shipping Timeframe
+          example: OVERNIGHT
+          enum:
+            - ELECTRONIC
+            - SAME_DAY
+            - OVERNIGHT
+            - PRIORITY
+            - GROUND
+        threeDSAttempted:
+          type: boolean
+          description: Whether the user was directed to 3DS
+          example: true
+        challengeRequired:
+          type: boolean
+          description: Indicates whether a challenge is required to complete authentication. For example, regional mandates.
+          example: false
+        threeDSSuccess:
+          type: boolean
+          description: Whether the user was successfully authenticated by 3DS
+          example: true
+        threeDSStartTime:
+          type: integer
+          description: The time at which the user was directed to 3DS (unix timestamp).
+          format: int64
+          example: 101010101010101
+        threeDSEndTime:
+          type: integer
+          description: The time at which the user returned from 3DS (unix timestamp).
+          format: int64
+          example: 101010101010101
+        threeDSTimedOut:
+          type: boolean
+          description: Whether the user is believed to have abandoned 3DS.
+          example: false
+        threeDSVersion:
+          type: string
+          description: This field contains the 3DS version that was used to process the transaction.
+          example: 2.2.0
+          enum:
+            - One_Zero_Two
+            - Two_One_Zero
+            - Two_Two_Zero
+        threeDSLiabilityShifted:
+          type: boolean
+          description: Whether the liability of the transaction resulting in a chargeback has moved from the merchant to the card issuer.
+          example: true
+        eciFlagNormalized:
+          type: string
+          description: Electronic Commerce Indicator (ECI) normalized. The ECI value is part of the 2 data elements that indicate the transaction was processed electronically.
+          example: '05'
+          enum:
+            - MCAuthenticated
+            - MCAttempted
+            - MCNon3DSecure
+            - Authenticated
+            - Attempted
+            - Non3DSecure
+            - MCAuthenticatedDataOnly
+        paResStatus:
+          type: string
+          description: Transactions status result identifier.
+          example: 'Y'
+          enum:
+            - 'Y'
+            - 'N'
+            - U
+            - A
+            - C
+            - R
+            - D
+            - I
+        threeDSTransStatusReason:
+          type: string
+          description: Provides information on why the transStatus field has the specified value.
+          example: success
+        threeDSMessageType:
+          type: string
+          description: Identifies the type of message from which the transStatus value was received.
+          example: finalMessage
+        threeDSIReqCode:
+          type: string
+          description: If the transStatus value is U the accompanying invalid request code should be provided to further explain the reason authentication could not be performed.
+          example: valid
+        acquirerId:
+          type: string
+          description: The acquirer is a financial institution with whom the merchant has a bank account.
+          example: chase
+        acquirerBin:
+          type: string
+          description: The bank identification number of the acquirer.
+          example: '101010'
+        acquirerCountry:
+          type: string
+          description: The three letter country code of the country in which your acquirer will settle the payment.
+          example: USD
+        acquirerCountryCleansed:
+          type: string
+          description: Normalized country code of the country in which your acquirer will settle the payment.
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        productCode:
+          type: string
+          description: Merchant product code. Merchant product code.
+          example: PHY
+          enum:
+            - PHY
+            - CHA
+            - ACF
+            - PAL
+      description: Additional 3DS information.
+    FraudVASRequest:
+      required:
+        - adapter
+        - apiTraceId
+        - currency
+        - mid
+        - transactionType
       type: object
       properties:
-        categories:
+        source:
+          type: string
+          description: Platform Source of the request.
+          example: Clover
+          enum:
+            - Clover
+            - CommerceHub
+            - uCom
+            - IPG
+            - Buypass
+            - North
+            - Compass
+            - Omaha
+            - CardPointe
+            - IPGAPAC
+            - Aurus
+        clientID:
+          type: string
+          description: A unique ID used to identify the Client.
+          example: bbuy
+        adapter:
+          type: string
+          description: Fraud VAS Adapter
+          example: CommerceHub
+          enum:
+            - None
+            - CommerceHub
+            - uCom
+            - Clover
+            - NorthFrontEnd
+            - BuypassFrontEnd
+            - AutoBlock
+            - CardPointe
+            - Portfolio
+            - IPGBrazil
+            - CompassFrontEnd
+            - OmahaFrontEnd
+            - IPGAPAC
+            - Aurus
+        partnerID:
+          type: string
+          description: Optional Channel identifier
+          example: XYZ
+        portfolioID:
+          type: string
+          description: Portfolio identifier
+          example: XYZ
+        apiTraceId:
+          type: string
+          description: Request identifier in API that can be used to request logs from the support team.
+          example: 1234567a1234567b1234567c1234567d
+        clientRequestId:
+          type: string
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          example: 5fcd13e2ec114c58b5216c542a4ce4d7
+        transactionType:
+          type: string
+          description: Identifies the type of the authorization.
+          example: Charge-Sale
+          enum:
+            - Charge-Pre-Auth
+            - Charge-Sale
+            - Refund
+            - Account-Verification
+            - Charge-Capture
+            - Refund-Auth
+            - Refund-Capture
+            - Balance-Inquiry
+            - Telecheck-Sale
+            - Telecheck-Status
+            - Telecheck-Adjust
+            - Cancel-Pre-Auth
+            - Cancel-Sale
+            - Cancel-Capture
+        primaryTransactionId:
+          type: string
+          description: The unique identifier from the original transaction passed for a reauthorization and incremental authorization.
+          example: '838916029301'
+        total:
+          type: number
+          description: Total amount.
+          format: double
+          example: 15.5
+        currency:
+          type: string
+          description: ISO 3 Currency Format.
+          example: USD
+          enum:
+            - Unknown
+            - USD
+            - AFN
+            - DZD
+            - ARS
+            - AMD
+            - AWG
+            - AUD
+            - AZN
+            - BSD
+            - BHD
+            - THB
+            - PAB
+            - BBD
+            - BYR
+            - BZD
+            - BMD
+            - VEF
+            - BOB
+            - BRL
+            - BND
+            - BGN
+            - BIF
+            - CAD
+            - CVE
+            - KYD
+            - XOF
+            - XAF
+            - XPF
+            - CLP
+            - COP
+            - KMF
+            - BAM
+            - NIO
+            - CRC
+            - HRK
+            - CUP
+            - CZK
+            - GMD
+            - DKK
+            - MKD
+            - DJF
+            - STD
+            - DOP
+            - VND
+            - XCD
+            - EGP
+            - SVC
+            - ETB
+            - EUR
+            - FKP
+            - FJD
+            - HUF
+            - CDF
+            - GHS
+            - GIP
+            - HTG
+            - PYG
+            - GNF
+            - GWP
+            - GYD
+            - HKD
+            - UAH
+            - ISK
+            - INR
+            - IRR
+            - IQD
+            - JMD
+            - JOD
+            - KES
+            - PGK
+            - LAK
+            - KWD
+            - MWK
+            - ZMK
+            - AOA
+            - MMK
+            - GEL
+            - LVL
+            - LBP
+            - ALL
+            - HNL
+            - SLL
+            - LRD
+            - LYD
+            - SZL
+            - LTL
+            - LSL
+            - MGA
+            - MYR
+            - MUR
+            - MZN
+            - MXN
+            - MXV
+            - MDL
+            - MAD
+            - BOV
+            - NGN
+            - ERN
+            - NAD
+            - NPR
+            - ANG
+            - ILS
+            - RON
+            - TWD
+            - TRY
+            - NZD
+            - BTN
+            - KPW
+            - NOK
+            - PEN
+            - MRO
+            - TOP
+            - PKR
+            - MOP
+            - UYU
+            - PHP
+            - GBP
+            - BWP
+            - QAR
+            - GTQ
+            - ZAR
+            - OMR
+            - KHR
+            - MVR
+            - IDR
+            - RUB
+            - RWF
+            - SHP
+            - SAR
+            - XDR
+            - RSD
+            - SCR
+            - SGD
+            - SBD
+            - KGS
+            - SOS
+            - TJS
+            - LKR
+            - SDG
+            - SRD
+            - SEK
+            - CHF
+            - SYP
+            - BDT
+            - WST
+            - TZS
+            - KZT
+            - TTD
+            - MNT
+            - TND
+            - AED
+            - UGX
+            - COU
+            - CLF
+            - UYI
+            - USN
+            - USS
+            - UZS
+            - VUV
+            - CHE
+            - CHW
+            - KRW
+            - YER
+            - JPY
+            - CNY
+            - PLN
+            - XBA
+            - XTS
+            - XBB
+            - XBD
+            - XBC
+            - XAU
+            - XPD
+            - XPT
+            - XAG
+            - XXX
+            - XFU
+            - TMT
+            - ZWL
+            - CUC
+            - SSP
+            - XUA
+            - XSU
+            - BYN
+            - VES
+            - ZMW
+            - MRU
+            - STN
+            - SLE
+            - VED
+            - UYW
+        securityCodeResponse:
+          type: string
+          description: Bank security code response.
+          example: V
+        avsCode:
+          type: string
+          description: AVS response code.
+          example: X
+        authCode:
+          type: string
+          description: Authorization code from association(s). Generally, 6/7 alphanumeric code that gets printed on the receipt.
+          example: 99AA99
+        declineNotification:
+          type: boolean
+          description: Decline Notification
+          example: false
+        declineCode:
+          type: string
+          description: Decline Notification - Reason Code
+          example: AA
+        refundType:
+          type: string
+          description: Refund Transaction Type. default is TaggedMatched
+          example: TaggedMatched
+          enum:
+            - TaggedMatched
+            - TaggedUnmatched
+            - Open
+        timestamp:
+          type: integer
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit.
+          format: int64
+          example: 1659710763230
+        terminalID:
+          type: string
+          description: The terminal identifier for the transaction.
+          example: '99'
+        switchDeliverySource:
+          type: string
+          description: Delivery source set on the authorization from the front end that denotes a specific group of mid.
+          example: LLNE
+        txnOriginator:
+          type: string
+          description: Originating system of the txn.
+          example: MO
+        sendMode:
+          type: string
+          description: Indicates store and forward mode of the transaction.
+          example: Offline
+          enum:
+            - Normal
+            - Deferred
+        methodOfPayment:
+          type: string
+          description: Identifies the method of payment used on the transaction.
+          example: EMV
+          enum:
+            - Manual
+            - MagneticStripe
+            - OCR
+            - EMV
+            - ContactlessChip
+            - MobileECommerce
+            - Fallback
+            - BarCode
+            - NotSpecified
+            - CredentialOnFile
+            - ContactlessMagneticStripe
+        origin:
+          type: string
+          description: Identifies the origin used on the transaction.
+          example: Inside
+          enum:
+            - Unknown
+            - Inside
+            - Outside
+        cardGroup:
+          type: string
+          description: Identifies the card group (Buypass) used on the transaction.
+          example: Fleet
+          enum:
+            - Unknown
+            - Fleet
+            - CarteBlanche
+            - Amex
+            - Visa
+            - Mastercard
+            - DebitCheck
+            - DebitSave
+            - Diners
+            - Diamond
+            - Telecredit
+            - Telecheck
+            - Jbs
+            - Chkver
+            - Texaco
+            - Discover
+            - Genprop
+            - TexVoyager
+            - Fina
+            - Tenneco
+            - Florofax
+            - Sohio
+            - Wright
+            - Debach
+            - Cash
+            - ChasePt
+            - AtmSave
+            - Citgoblk
+            - Buycheck
+            - Etc
+            - Tesoro
+            - Ucc
+            - Texflet
+            - Cenex
+            - Etcvel
+            - Aprissa
+            - Citgored
+            - Citgosil
+            - Chkvel
+            - Propchk
+            - TexacoLoyalty
+            - Coastal
+            - Sunfee
+            - Sunnofee
+            - Suncore
+            - Propcred
+            - Phhfleet
+            - DiamondFleet
+            - EbtFood
+            - EbtCash
+            - EbtWic
+            - ExxonProp
+            - ExxonFleet
+            - EssoFleet
+            - CarCare
+            - DebitSignature
+            - Bp
+            - Unocal
+            - BltPhone
+            - ValiChk
+            - ApiFed
+            - ApiCom
+            - Svcrd
+            - SunFleet
+            - Jcb
+            - MastercardFleet
+            - Gascd
+            - Agsmart
+            - Sinclair
+            - SinclairThanks
+            - CfiFleet
+            - Motorcard
+            - ChkTruncated
+            - Daycare
+            - Shell
+            - ShellFleet
+            - ChkPaper
+            - Starchek
+            - Sears
+            - Starchkd
+            - Telecheckv
+            - Wic
+            - Homedepot
+            - Telecheckeca
+            - Conoco
+            - Suntfee
+            - Suntnofe
+            - Tstcred
+            - PerformCard
+            - Ryder
+            - Errors
+            - CallLog
+            - Specials
+            - GenericPvtLabel
+            - Voyager
+            - NYCEDebit
+            - MOSTDebit
+            - PulseDebit
+            - Ebt
+            - EcaWarrantee
+            - EcaNonWarrantee
+            - CorpLodging
+            - DentAMedPvtLabel
+            - TelemoneyDLN
+            - TelemoneyMICR
+            - TelemoneyDebit
+            - TelemoneyPvtLabel
+            - CfnaABrand
+            - CfnaTag
+            - AcePvtLabel
+            - SmartCarte
+            - Tpago
+            - MonogramPvtLabel
+            - AgriCardPvtLabel
+            - GeccPvtLabel
+            - Debit
+            - STAR
+            - AustBankCard
+            - AustDebitCard
+            - UKDomsMaestro
+            - Maestro
+            - GoogleChkOut
+            - PaypalAltPay
+            - Pagobancomat
+            - ChinaUnion
+            - Redemption
+        authNetwork:
+          type: string
+          description: Identifies the authorization Network (Buypass) used on the transaction.
+          example: Accel
+          enum:
+            - Unknown
+            - Amex
+            - Visa
+            - Master
+            - Discover
+            - Pulse
+            - Accel
+            - Interlink
+            - Jeanie
+            - Maestro
+            - NYCE
+            - CU24
+            - Shazam
+            - EBT
+            - AFFN
+            - Telecheck
+            - Diners
+            - PayPal
+            - ValueLink
+            - Private
+            - Debit
+            - Voyager
+            - ATH
+            - JCB
+            - StarNE
+            - StarSE
+            - StarW
+            - StarAccess
+            - FleetCor
+            - SVS
+            - WEX
+            - Incomm
+            - Interac
+            - NA
+            - Moneris
+            - VaultedCard
+            - PAVD
+            - MCSend
+            - UnionPay
+            - FraudFlex
+            - Certegy
+            - MCI
+            - PaypalVenmo
+            - Conduent
+            - FISG
+            - INMR
+            - PWMB
+            - SOLU
+            - WCHP
+            - AliPay
+            - EFunds
+            - ACS
+        subsequent:
+          type: boolean
+          description: Indicates if the transaction is first or subsequent.
+          example: true
+        scheme:
+          type: string
+          description: Processing card network.
+          example: VISA
+          enum:
+            - UNKNOWN
+            - VISA
+            - MASTERCARD
+            - AMEX
+            - DISCOVER
+            - CUP
+            - DINERS
+            - JCB
+            - PRIVATE
+            - CLOSED_LOOP
+            - EBT
+            - VOYAGER
+            - FLEET
+            - WEX
+            - DEBIT_OTHER
+        cardExpiryMonth:
+          type: integer
+          description: Card Expiry Month
+          format: int32
+          example: 1
+        cardExpiryYear:
+          type: integer
+          description: Card Expiry Year
+          format: int32
+          example: 1000
+        cardData:
+          type: string
+          description: Card Number encrypted via AES. Required if encryptedCardData, acnuFirstSix, and acnuLastFour not provided.
+          example: jRJqrtmxGbCheVhpyJxTXTAVSNFFk2nHwZBsVgBLQA==
+        encryptedCardData:
+          type: string
+          description: Encrypted Credit Card Number via voltage. Required if cardData, acnuFirstSix, and acnuLastFour not provided.
+          example: 371449ODBSR8431
+        acnuFirstSix:
+          type: string
+          description: First six digits of card number. Required if encryptedCardData and cardData not provided."
+          example: '123456'
+        acnuLastFour:
+          type: string
+          description: Last four digits of card number. Required if encryptedCardData and cardData not provided.
+          example: '9876'
+        paymentType:
+          type: string
+          description: Denotes the type of payment used for the transaction.
+          example: PaymentCard
+          enum:
+            - Unknown
+            - ApplePay
+            - GooglePay
+            - SamsungPay
+            - PaymentCard
+            - PaymentToken
+            - NetworkToken
+            - PayPal
+            - WalmartPay
+            - AmazonPay
+            - VisaCheckout
+        customerReference:
+          type: string
+          description: Customer identification value.
+          example: abcdefg
+        email:
+          type: string
+          description: Customer email address.
+          example: customer@domain.com
+        gender:
+          type: string
+          description: Customer gender
+          example: female
+          enum:
+            - MALE
+            - FEMALE
+            - OTHER
+        merchantAssignedId:
+          type: string
+          description: Merchant id assigned to the merchant by the scoring provider
+          example: '123456789'
+        sessionId:
+          type: string
+          description: Unique Session ID for the client. Provides a lookup for browser or mobile device detail information.
+          example: 06162f0c-297d-417e-a473-0d9cb64023f1
+        customerName:
+          type: string
+          description: Customer name
+          example: John
+        customerCreationTime:
+          type: integer
+          description: Epoch timestamp associated with the creation of the user id in the merchant system.
+          format: int64
+          example: 1234567890
+        customerDOB:
+          type: string
+          description: Customer date of birth as YYYYMMDD.
+          example: '20000101'
+        customerExtId:
+          type: string
+          description: Merchant assigned account number for customer.
+          example: 402344bec2cb4f438e5a9f690e4c7f5a
+        customerPhoneNumber:
+          type: string
+          description: Customer phone number
+          example: '5555555555'
+        customerWorkPhoneNumber:
+          type: string
+          description: Customer work phone number
+          example: '5555555555'
+        customerHouseNumberOrName:
+          type: string
+          description: Customer House number
+          example: '2222'
+        customerStreet:
+          type: string
+          description: Customer Street Address
+          example: commons Street
+        customerStreet2:
+          type: string
+          description: More Customer Street Address details
+          example: Commons community
+        customerCity:
+          type: string
+          description: City of customer
+          example: Atlanta
+        customerCountry:
+          type: string
+          description: Customer ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
+          example: US
+        customerCountryCleansed:
+          type: string
+          description: Normalized Country of customer
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        customerPostalCode:
+          type: string
+          description: postalcode of customer
+          example: '30005'
+        customerStateOrProvince:
+          type: string
+          description: State or Province of customer
+          example: Georgia
+        customerStateCleansed:
+          type: string
+          description: State Code of customer
+          example: Georgia
+          enum:
+            - Unknown
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - GU
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - PA
+            - PR
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - VI
+            - WA
+            - WV
+            - WI
+            - WY
+            - AB
+            - BC
+            - MB
+            - NB
+            - NL
+            - NT
+            - NS
+            - NU
+            - 'ON'
+            - PE
+            - QC
+            - SK
+            - YT
+        customerType:
+          type: string
+          description: Merchant customer type
+          example: Ford Streaming
+        untumbledEmail:
+          type: string
+          description: Customer untumbledEmail address.
+          example: customer@domain.com
+        mid:
+          type: string
+          description: A unique ID used to identify the Merchant.
+          example: '11111111'
+        ecomURL:
+          type: string
+          description: This field contains the URL of the site performing the Ecommerce transaction.
+          example: https://www.somedomain.com
+        sourceMid:
+          type: string
+          description: External mid.
+          example: '22222'
+        merchantCountry:
+          type: string
+          description: Merchant ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
+          example: US
+        merchantCountryCleansed:
+          type: string
+          description: Normalized Merchant Country Code.
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        merchantPostalCode:
+          type: string
+          description: PostalCode of Merchant
+          example: '30040'
+        merchantHouseNumberOrName:
+          type: string
+          description: HouseNumber or Name of Merchant
+          example: '4105'
+        merchantStreet:
+          type: string
+          description: Street of Merchant
+          example: Loring street
+        merchantCity:
+          type: string
+          description: City of Merchant
+          example: Atlanta
+        merchantStateOrProvince:
+          type: string
+          description: State of Merchant
+          example: NY
+        merchantStateCleansed:
+          type: string
+          description: State Code of Merchant
+          example: NY
+          enum:
+            - Unknown
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - GU
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - PA
+            - PR
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - VI
+            - WA
+            - WV
+            - WI
+            - WY
+            - AB
+            - BC
+            - MB
+            - NB
+            - NL
+            - NT
+            - NS
+            - NU
+            - 'ON'
+            - PE
+            - QC
+            - SK
+            - YT
+        mcc:
+          type: integer
+          description: Merchant Category Code (MCC). The MCC is an industry standard four-digit number used to classify a business by the type of goods or services provided.
+          format: int32
+          example: 7311
+        ipAddress:
+          type: string
+          description: The TXN_IP address of the customer.
+          example: 170.165.02.26
+        billingStreet:
+          type: string
+          description: Billing Street address.
+          example: 123 Main Street
+        billingHouseNumberOrName:
+          type: string
+          description: Billing Secondary address information, e.g. house number or name.
+          example: Apt 213
+        billingRecipientNameOrAddress:
+          type: string
+          description: Billing Tertiary address information e.g. recipient name, company name or address.
+          example: 'ATTN: Accounting Dept'
+        billingCity:
+          type: string
+          description: Billing City or locality.
+          example: Sandy Springs
+        billingStateOrProvince:
+          type: string
+          description: Billing State or province.
+          example: GA
+        billingStateCleansed:
+          type: string
+          description: Billing State Code.
+          example: GA
+          enum:
+            - Unknown
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - GU
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - PA
+            - PR
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - VI
+            - WA
+            - WV
+            - WI
+            - WY
+            - AB
+            - BC
+            - MB
+            - NB
+            - NL
+            - NT
+            - NS
+            - NU
+            - 'ON'
+            - PE
+            - QC
+            - SK
+            - YT
+        billingPostalCode:
+          type: string
+          description: Billing ZIP code or postal code.
+          example: 30303-0001
+        billingCountry:
+          type: string
+          description: Billing ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
+          example: US
+        billingCountryCleansed:
+          type: string
+          description: Normalized Billing Country Code.
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        billingCounty:
+          type: string
+          description: Billing The 5-digit number or full county name identifying the U.S. county as defined by FIPS, indicating where the transaction occurred.
+          example: '13121'
+        billingPhoneNumber:
+          type: string
+          description: Billing phone number
+          example: '5555555555'
+        billingFirstName:
+          type: string
+          description: First name of the recipient
+          example: John
+        billingLastName:
+          type: string
+          description: Last name of the recipient
+          example: Doee
+        billingStreet2:
+          type: string
+          description: Billing Street Address
+          example: Jefferson creek
+        shippingStreet:
+          type: string
+          description: Shipping Street address.
+          example: 123 Main Street
+        shippingStreet2:
+          type: string
+          description: Shipping Street address
+          example: Collingwood Lane
+        shippingHouseNumberOrName:
+          type: string
+          description: Shipping Secondary address information, e.g. house number or name.
+          example: Apt 213
+        shippingRecipientNameOrAddress:
+          type: string
+          description: Shipping Tertiary address information e.g. recipient name, company name or address.
+          example: 'ATTN: Accounting Dept'
+        shippingCity:
+          type: string
+          description: Shipping City or locality.
+          example: Sandy Springs
+        shippingStateOrProvince:
+          type: string
+          description: Shipping State or province.
+          example: GA
+        shippingStateCleansed:
+          type: string
+          description: Shipping State Code.
+          example: GA
+          enum:
+            - Unknown
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - GU
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - PA
+            - PR
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - VI
+            - WA
+            - WV
+            - WI
+            - WY
+            - AB
+            - BC
+            - MB
+            - NB
+            - NL
+            - NT
+            - NS
+            - NU
+            - 'ON'
+            - PE
+            - QC
+            - SK
+            - YT
+        shippingPostalCode:
+          type: string
+          description: Shipping ZIP code or postal code.
+          example: 30303-0001
+        shippingCountry:
+          type: string
+          description: Shipping ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
+          example: US
+        shippingCountryCleansed:
+          type: string
+          description: Normalized Shipping Country Code.
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        shippingCounty:
+          type: string
+          description: Shipping The 5-digit number or full county name identifying the U.S. county as defined by FIPS, indicating where the transaction occurred.
+          example: '13121'
+        shippingEmail:
+          type: string
+          description: Shipping email address
+          example: recipient@domain.com
+        shippingPhoneNumber:
+          type: string
+          description: Shipping phone number
+          example: '5555555555'
+        shippingType:
+          type: string
+          description: Shipping type
+          example: SD
+          enum:
+            - SD
+            - ND
+            - 2D
+            - ST
+        shippingItems:
           type: array
+          description: Shipping Items
           items:
+            $ref: '#/components/schemas/ShippingItem'
+        shippingOrderId:
+          type: string
+          description: Shipping Order ID
+          example: B2987654321qwert
+        orderNumber:
+          type: string
+          description: Order number set by the merchant
+          example: '123456789'
+        providerUdf:
+          type: object
+          additionalProperties:
+            type: string
+            description: Map that can carry any additional information
+            example: '{"risky":"true"}'
+          description: Map that can carry any additional information
+          example:
+            risky: 'true'
+        customerUdf:
+          type: object
+          additionalProperties:
+            type: string
+            description: Map that carries custom Client details
+          description: Map that carries custom Client details
+        shippingUdf:
+          type: object
+          additionalProperties:
+            type: string
+            description: Map that carries custom Shipping Information
+          description: Map that carries custom Shipping Information
+        deviceUdf:
+          type: object
+          additionalProperties:
             type: object
-            properties:
-              name:
-                type: string
-                description: Name
-              subcategories:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: Name
-                description: Subcategories
-          description: Categories
-    TenantProviderResponse:
+            description: Map that carries custom Device Data
+          description: Map that carries custom Device Data
+        merchantUdf:
+          type: object
+          additionalProperties:
+            type: string
+            description: Map that carries custom Merchant Information
+          description: Map that carries custom Merchant Information
+        pumpNumber:
+          type: integer
+          description: 'Pump Number '
+          format: int32
+          example: 4
+        purchaseType:
+          type: string
+          description: Merchant Purchase type
+        inOutStore:
+          type: string
+          description: Merchant location
+          example: INSTORE
+        deviceRooted:
+          type: string
+          description: Compromised device indication.
+        deviceId:
+          type: string
+          description: Device ID that has been used
+          example: rvnand-4-EAF7B6C9EA
+        deviceModel:
+          type: string
+          description: Model of Device Used
+          example: Retina
+        deviceOS:
+          type: string
+          description: OS of Device Used
+          example: macosx
+        deviceType:
+          type: string
+          description: Type of Device Used
+          example: Mobile
+        deviceManufacturer:
+          type: string
+          description: Manufacturer of Device used
+          example: Intel
+        deviceCountry:
+          type: string
+          description: Country in which Device is present
+          example: USA
+        deviceCountryCleansed:
+          type: string
+          description: Normalized Shipping Country Code in which Device is present.
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        deviceLat:
+          type: number
+          description: Latitude of Device
+          format: double
+          example: 11.11
+        deviceLong:
+          type: number
+          description: Longitude of Device
+          format: double
+          example: -11.11
+        deviceCity:
+          type: string
+          description: City in which Device is present
+          example: Dallas
+        deviceStateOrProvince:
+          type: string
+          description: State in which Device is present
+          example: Texas
+        deviceStateCleansed:
+          type: string
+          description: State Code in which Device is present
+          example: Texas
+          enum:
+            - Unknown
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - GU
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - PA
+            - PR
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - VI
+            - WA
+            - WV
+            - WI
+            - WY
+            - AB
+            - BC
+            - MB
+            - NB
+            - NL
+            - NT
+            - NS
+            - NU
+            - 'ON'
+            - PE
+            - QC
+            - SK
+            - YT
+        deviceUserAgent:
+          type: string
+          description: Device user agent
+          example: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3
+        deviceLanguage:
+          type: string
+          description: Device language
+          example: en-US,en;q=0.9
+        deviceJavaEnabled:
+          type: boolean
+          description: A Boolean value that represents the ability of the cardholder browser to execute Java.
+          example: true
+        deviceJavaScriptEnabled:
+          type: boolean
+          description: A Boolean value that represents represents the ability of the cardholder browser to execute JavaScript.
+          example: true
+        deviceHeader:
+          type: string
+          description: The exact content of the HTTP accept headers sent from the cardholder's browser.
+          example: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+        deviceColorDepth:
+          type: integer
+          description: Value represents the bit depth of the color palette for displaying images, in bits per pixel.
+          format: int32
+          example: 32
+        deviceScreenHeight:
+          type: integer
+          description: Total height of the Cardholders screen in pixels.
+          format: int32
+          example: 512
+        deviceScreenWidth:
+          type: integer
+          description: Total width of the cardholder's screen in pixels.
+          format: int32
+          example: 1256
+        deviceTimeZone:
+          type: integer
+          description: Time difference between UTC time and the cardholder browser local time, in minutes.
+          format: int32
+          example: 200
+        deviceChannel:
+          type: string
+          description: Determines the channel that the transaction came through.
+          example: 3RI
+          enum:
+            - SDK
+            - Browser
+            - ThreeRI
+        token:
+          type: string
+          description: The tokenized payment account number.
+          example: ABNSGTARVSFJEOAHS
+        tokenType:
+          type: string
+          description: The token type and key associated with the tokenized payment account number.
+          example: L01
+        additional3DS:
+          $ref: '#/components/schemas/Additional3DS'
+        processNonSecureTransaction:
+          type: boolean
+          description: Does the merchant allow authorization on a 3DS decline.
+          example: true
+        status3DS:
+          type: string
+          description: 3DS transaction status result.
+          example: Success
+          enum:
+            - Success
+            - Failed
+            - Attempted
+            - NotSupported
+            - NotPerformed
+        routingNumber:
+          type: string
+          description: Routing number of the check from MICR.
+          example: '123456789'
+        recurringPayment:
+          type: boolean
+          description: Signals whether it is a recurring payment.
+          example: true
+        checkType:
+          type: string
+          description: Type of check
+          example: P
+          enum:
+            - P
+            - C
+        accountType:
+          type: string
+          description: Type of account
+          example: '0'
+          enum:
+            - '0'
+            - '1'
+        nativeRejectCode:
+          type: string
+          description: Native reject code from frontends
+          example: '503'
+        nativeRejectCodeCleansed:
+          type: string
+          description: Normalized Native reject code/reason
+          example: FRAUD_RELATED
+          enum:
+            - FRAUD_RELATED
+            - PARTIAL_FRAUD
+            - SYSTEM_ERROR
+            - CREDIT_ISSUE
+            - APPROVED
+            - DO_NOT_HONOR
+            - NO_ANSWER
+        replay:
+          type: boolean
+      description: Input for a fraud/velocity check
+    ShippingItem:
       type: object
       properties:
-        brand:
-          type: string
-          description: Brand
-        brandDescription:
-          type: string
-          description: BrandDescription
-        brandLogoURL:
-          type: string
-          description: BrandLogoURL
-        categories:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name
-              subcategories:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: Name
-                    value:
-                      type: string
-                      description: Value
-                description: Subcategories
-              value:
-                type: string
-                description: Value
-          description: Categories
         name:
           type: string
-          description: Name
-        product:
-          type: object
-          properties:
-            apiSpecification:
-              type: string
-              description: APISpecification 
-            description:
-              type: string
-              description: Description
-            documentation:
-              type: string
-              description: Documentation
-            featured:
-              type: boolean
-              description: Featured
-            layout:
-              type: string
-              description: Layout
-            logoURL:
-              type: string
-              description: LogoURL
-          description: Product
-        solution:
+          description: Shipping item name.
+          example: Football
+        type:
           type: string
-          description: Solution
-        title:
+          description: Shipping item type.
+          example: Sports
+        description:
           type: string
-          description: Title
-  responses:
-    apiSpecResponseWrapper:
-      description: OpenAPI Spec for the APIs. 
-      content: {}
-    docsResponseWrapper:
-      description: Markdown files.
-      content: {}
-    liveResponse:
-      description: Health check.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/LiveProbeResponse'
-        text/yaml:
-          schema:
-            $ref: '#/components/schemas/LiveProbeResponse'
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/LiveProbeResponse'
-    productPage:
-      description: This text will appear as description of your response body. 
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PageLayoutResponse'
-        text/yaml:
-          schema:
-            $ref: '#/components/schemas/PageLayoutResponse'
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/PageLayoutResponse'
-    tenant:
-      description: This text will appear as description of your response body. 
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TenantProviderResponse'
-        text/yaml:
-          schema:
-            $ref: '#/components/schemas/TenantProviderResponse'
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/TenantProviderResponse'
-  securitySchemes:
-    basic:
-      type: http
-      scheme: basic
+          description: Shipping item description.
+          example: Football
+        unit:
+          type: string
+          description: Shipping item unit.
+          example: Carrot
+        quantity:
+          type: number
+          description: Shipping item quantity.
+          format: double
+          example: 1
+        price:
+          type: number
+          description: Shipping item price.
+          format: double
+          example: 100
+        lineItem:
+          type: string
+          description: Shipping item lineItem
+        sku:
+          type: string
+          description: Shipping item sku
+          example: '10100110110'
+        currency:
+          type: string
+          description: Shipping item currency
+          example: USD
+        subtype:
+          type: string
+          description: Shipping item subtype
+          example: Equipment
+      description: Shipping Items
