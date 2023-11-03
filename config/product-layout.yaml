@@ -29,84 +29,54 @@
 ################################################################################
 
 header:
-  productDescription: To onboard properly into the Developer Studio as a new tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.
+  productDescription: Fraud Mitigation provides merchants the ability to decision authorization based on a number of in flight component attributes. The underlying infrastructure provides the gateway an environment that ultimately protects the firms asset by recognizing fraud patterns and stopping transactions that may fit this mold. The integration provides quick and easy access to a combination of proprietary and partner capabilities.
 getStarted: /docs/getting-started.md
 benefits:
-  - title: Transform Customer Experiences
-    description: Pre-certified integrations to value added solutions and third-party providers that power next-generation commerce experiences.
-  - title: Accelerate Revenue
-    description: Intelligent orchestration layer that reduces code complexity and operational costs.
-  - title: Optimize Commerce
-    description: Backoffice automation with a modern set of tools and APIs.
+  - title: Maximize Revenue
+    description: Increase the number of approved transactions, securely expand your business and increase wallet share.
+  - title: Prioritize Scalability
+    description: Automate decisions and lower operational cost to improve your team’s efficiency. Manage several fraud mitigation tools though a single vendor relationship.
+  - title: Improve Customer Experience
+    description: Ensure a seamless customer payment and checkout experience with decisions returned in milliseconds.
 guides:
-  - title: Setup a tenant
-    description: Fiserv Products within the Fiserv portfolio that are showcased through the studio are known as tenants. Tenants standup a tenant server that will serve all the content through the studio for developers visiting the Fiserv Developer Studio.
-    link: docs/getting-started/setup-tenant/setup-tenant.md
-  - title: Preview and Publish
-    description: This quick start guide will provide you with the necessary steps to get you from API Specification to ready-to-preview/publish API Documentation in 10 minutes flat.
-    link: docs/getting-started/preview-and-publish-content/preview-and-publish.md
-  - title: Using Markdown
-    description: Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents.
-    link: docs/resources/markdown-support.md
+  - title: Control
+    description: Rule based engine with basic risk controls.
+    link: docs/control.md
+  - title: Score
+    description: Advanced machine learning score for transaction risk monitoring.
+    link: docs/score.md
+  - title: Guarantee
+    description: Chargeback liability protection.
+    link: docs/guarantee.md
 featuredFeatures:
-  - title: Documentation 1
+  - title: Control
     groupName: Guides
     featured: true
-    description: Step by step documentation to setup and market your product.
+    description: Rule based engine with basic risk controls.
     relatedDocs:
-      - link: docs/getting-started/setup-tenant/setup-tenant.md
-        title: Tenant setup
+      - link: docs/control.md
+        title: Control
     relatedAPIs:
       - type: post
         path: /address
         title: Add Address
-  - title: Documentation 1
-    groupName: Howto
+  - title: Score
+    groupName: Guides
     featured: true
-    description: Step by step documentation to setup and market your product.
+    description: Advanced machine learning score for transaction risk monitoring.
     relatedDocs:
-      - link: docs/getting-started/setup-tenant/setup-tenant.md
-        title: Tenant setup
+      - link: docs/score.md
+        title: Score
     relatedAPIs:
       - type: post
         path: /address
         title: Add Address
-  - title: Documentation 2
+  - title: Guarantee
     groupName: Guides
-    description: Step by step documentation to setup and market your product.
+    description: Chargeback liability protection.
     relatedDocs:
-      - link: docs/getting-started/setup-tenant/setup-tenant.md
-        title: Tenant setup
-    relatedAPIs:
-      - type: post
-        path: /address
-        title: Add Address
-  - title: Documentation 3
-    groupName: Guides
-    description: Step by step documentation to setup and market your product.
-    relatedDocs:
-      - link: docs/getting-started/setup-tenant/setup-tenant.md
-        title: Tenant setup
-    relatedAPIs:
-      - type: post
-        path: /address
-        title: Add Address
-  - title: Documentation 2
-    groupName: Howto
-    description: Step by step documentation to setup and market your product.
-    relatedDocs:
-      - link: docs/getting-started/setup-tenant/setup-tenant.md
-        title: Tenant setup
-    relatedAPIs:
-      - type: post
-        path: /address
-        title: Add Address
-  - title: Documentation 3
-    groupName: Howto
-    description: Step by step documentation to setup and market your product.
-    relatedDocs:
-      - link: docs/getting-started/setup-tenant/setup-tenant.md
-        title: Tenant setup
+      - link: docs/guarantee.md
+        title: Guarantee
     relatedAPIs:
       - type: post
         path: /address
