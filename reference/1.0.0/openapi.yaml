@@ -8,6 +8,10 @@ info:
 servers:
   - url: https://connect-qa.fiservapis.com/fvas-mitigation-v1/
     description: QA external endpoint
+  - url: https://connect-dev.fiservapis.com/fvas-mitigation-v1/
+    description: DEV external endpoint
+  - url: https://connect-uat.fiservapis.com/fvas-mitigation-v1/
+    description: Stage/CAT external endpoint
 tags:
   - name: Fraud Mitigation Exec services
     description: Fraud Mitigation Exec services

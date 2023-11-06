@@ -23,6 +23,8 @@ With priority placed on scalability and ease of use, merchants can integrate int
 
 >Utilize the developer api to simulate the authorization calls for mitigation. 
 
+### Data Requirements
 
+>Send in the strongest attributes for the most accurate fraud score.
 
 
