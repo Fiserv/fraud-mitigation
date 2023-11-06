@@ -9,7 +9,7 @@
       {
         "version": "1.0.0",
         "versionType": "major",
-        "releaseNotesPath": "docs/release-notes/2022/march.md",
+        "releaseNotesPath": "docs/release-notes/2023/november.md",
         "apiSpecFileNames": ["openapi"]
       }
   ],
@@ -17,17 +17,17 @@
   "product": {
     "featured": true,
     "logoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Portal_Logo.png",
-    "description": "To onboard properly into the Developer Studio as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
-    "longDescription":"To onboard properly into the Developer Studi as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
-    "apiSpecification": "/v1/apis/<FraudMitigation>",
-    "layout": "/v1/layouts/<FraudMitigation>",
-    "documentation": "/v1/docs/<FraudMitigation>",
-    "documenttree": "/v1/docs/<FraudMitigation>",
-    "documenttreeV2": "/v2/docs/<FraudMitigation>",
-    "docsCount": "/v2/docs/count/<FraudMitigation>",
-    "sandbox": "/v1/sandboxrun/<FraudMitigation>",
-    "accessConfig": "/v1/fileAccess/<FraudMitigation>",
-    "assets": "/v1/assets/<FraudMitigation>",    
+    "description": "Fraud Mitigation provides merchants the ability to decision authorization based on a number of in flight component attributes.",
+    "longDescription":"Fraud Mitigation provides merchants the ability to decision authorization based on a number of in flight component attributes. The underlying infrastructure provides the gateway an environment that ultimately protects the firms asset by recognizing fraud patterns and stopping transactions that may fit this mold. The integration provides quick and easy access to a combination of proprietary and partner capabilities.",
+    "apiSpecification": "/v1/apis/FraudMitigation",
+    "layout": "/v1/layouts/FraudMitigation",
+    "documentation": "/v1/docs/FraudMitigation",
+    "documenttree": "/v1/docs/FraudMitigation",
+    "documenttreeV2": "/v2/docs/FraudMitigation",
+    "docsCount": "/v2/docs/count/FraudMitigation",
+    "sandbox": "/v1/sandboxrun/FraudMitigation",
+    "accessConfig": "/v1/fileAccess/FraudMitigation",
+    "assets": "/v1/assets/FraudMitigation",
     "feature":[
       {
         "name": "sandBox",

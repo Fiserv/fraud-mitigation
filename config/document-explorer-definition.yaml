@@ -32,7 +32,10 @@
   - title: Getting Started
     link: docs/getting-started.md
 - sections:
+    - title: Data Requirements
+      link: docs/datareqs.md
+- sections:
   - title: Release notes
     sections:
-    - title: March 2022
-      link: docs/release-notes/2022/march.md
+    - title: November 2023
+      link: docs/release-notes/2023/november.md
