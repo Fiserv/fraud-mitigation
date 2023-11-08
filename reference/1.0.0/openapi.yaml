@@ -47,18 +47,8 @@ paths:
             application/json:
               schema:
                 type: string
-        '400':
-          description: Bad request. Validation exception.
-          content:
-            application/json:
-              schema:
-                type: string
-        '5XX':
-          description: Unexpected error.
-          content:
-            application/json:
-              schema:
-                type: string
+      x-proxy-name: preEvaluate
+      x-group-name: Aurus
   /{gatewayName}/post-evaluate/clientID/{clientID}:
     post:
       tags:
@@ -90,18 +80,8 @@ paths:
             application/json:
               schema:
                 type: string
-        '400':
-          description: Bad request. Validation exception.
-          content:
-            application/json:
-              schema:
-                type: string
-        '5XX':
-          description: Unexpected error.
-          content:
-            application/json:
-              schema:
-                type: string
+      x-proxy-name: postEvaluate
+      x-group-name: Aurus
 components:
   schemas:
     FraudVASRequest:
