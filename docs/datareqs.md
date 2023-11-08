@@ -1,16 +1,14 @@
-# Fraud Mitigation
-
-## Data Requirements
+# Data Integration
 
 ___
 
-Send in the strongest attributes for the most accurate fraud score.
+Provide the most relevant attributes for the most accurate fraud score.
 
 ---
 
-### Customer Profile
+## Customer Profile
 
-Platforms are customer centric, that is decisions are made on the likelihood of this consumer committing fraud on this event. As such accurate customer information is essential.
+Platforms are customer centric, decisions are made on the likelihood of this consumer committing fraud on this event. As such accurate customer information is essential.
 
 - Customer ID
 - Customer Name
@@ -32,9 +30,11 @@ Platforms are customer centric, that is decisions are made on the likelihood of 
 }
 ```
 
-### Order Information
+---
 
-Order details allow identification of high-risk delivery and store addresses, as well as high-risk products (i.e., gift cards) included in basket. 
+## Order Information
+
+Order details allow identification of high-risk delivery and store addresses, as well as high-risk products (i.e., gift cards) that are included in basket. 
 
 - Order ID
 - Price and Currency
@@ -79,7 +79,9 @@ Order details allow identification of high-risk delivery and store addresses, as
 }
 ```
 
-### Payment Information
+---
+
+## Payment Information
 
 Payment method information is essential in fraud prevention as it is the means of committing fraud. Full billing data allows identification of high-risk names and addresses.
 
@@ -104,7 +106,9 @@ Payment method information is essential in fraud prevention as it is the means o
 }
 ```
 
-### Device Information
+---
+
+## Device Information
 
 Tying a consumer to a device allows for more accurate identification of a specific entity. Device data also allows accurate detection of the location from which an order is placed.
 
@@ -129,7 +133,9 @@ Tying a consumer to a device allows for more accurate identification of a specif
 }
 ```
 
-### Transaction Information
+---
+
+## Transaction Information
 
 Transaction details change across the lifecycle (pre-auth/post-auth) of an order allowing the Fraud Engine to understand issuer declines, failed 3DS, etc.
 
@@ -152,7 +158,9 @@ Transaction details change across the lifecycle (pre-auth/post-auth) of an order
 }
 ```
 
-### Dispute Information
+---
+
+## Dispute Information
 
 Dispute information provides known/confirmed fraud cases to the Fraud Engine on the day the dispute is raised. This allows immediate response to emerging fraud trends.
 

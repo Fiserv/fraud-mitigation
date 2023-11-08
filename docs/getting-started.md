@@ -1,8 +1,5 @@
 # Getting Started
 
-## Fraud Mitigation
-
-
 ___
 
 Fraud Mitigation provides fraud protection in real time within the merchant's current authorization lifecycle. Maximize merchant revenue by reducing chargeback and refund rates.
@@ -10,21 +7,16 @@ With priority placed on scalability and ease of use, merchants can integrate int
 
 ---
 
-- [Step 1: Set Up](#step-1-set-up)
-- [Step 2: Test](#step-2-test)
+## Set up
 
----
+>Connect via a managed gateway that provides access to Fraud Mitigation or connect as a merchant directly. Ensure that the gateway provides the required data for the best results.
 
-### Set up
+## Scoring
 
->Connect via a managed gateway that provides access to Fraud Mitigation or connect as a merchant directly.
+>Leverage the established gateway connection to orchestrate scoring results from one of our partner solutions.
 
-### Test
+## Data Integration
 
->Utilize the developer api to simulate the authorization calls for mitigation. 
-
-### Data Requirements
-
->Send in the strongest attributes for the most accurate fraud score.
+>Data is key to identifying fraudulent patterns for business. Provide the most relevant [attributes](datareqs.md) for the most accurate fraud score.
 
 

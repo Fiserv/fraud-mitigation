@@ -46,9 +46,21 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/FraudVASResponse'
+        '400':
+          description: Bad request. Validation exception.
+          content:
+            application/json:
+              schema:
+                type: string
+        '5XX':
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
                 type: string
       x-proxy-name: preEvaluate
-      x-group-name: Aurus
+      x-group-name: Gateway
   /{gatewayName}/post-evaluate/clientID/{clientID}:
     post:
       tags:
@@ -79,9 +91,21 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/FraudVASResponse'
+        '400':
+          description: Bad request. Validation exception.
+          content:
+            application/json:
+              schema:
+                type: string
+        '5XX':
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
                 type: string
       x-proxy-name: postEvaluate
-      x-group-name: Aurus
+      x-group-name: Gateway
 components:
   schemas:
     FraudVASRequest:
@@ -966,3 +990,74 @@ components:
           description: Shipping item subtype
           example: Equipment
       description: Shipping Items
+    ExternalResponse:
+      type: object
+      properties:
+        score:
+          type: integer
+          format: int32
+        timeTaken:
+          type: integer
+          format: int32
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - Approve
+            - Review
+            - Decline
+            - Request3DS
+      description: Various Fraud Score.
+    FraudVASResponse:
+      required:
+        - apiTraceId
+        - approvalStatus
+        - description
+        - ruleID
+        - ruleVersion
+      type: object
+      properties:
+        ruleID:
+          type: string
+          description: The id of reason for declining the transaction.
+          example: 43rfe-43ffef-4334341
+        ruleVersion:
+          type: integer
+          description: The version of rule for declining the transaction.
+          format: int32
+          example: 1
+        approvalStatus:
+          type: string
+          description: The status of the fraud check
+          example: Approve
+          enum:
+            - Approve
+            - Review
+            - Decline
+            - Request3DS
+        apiTraceId:
+          type: string
+          description: Request identifier in API that can be used to request logs from the support team.
+          example: 1234567a1234567b1234567c1234567d
+        description:
+          type: string
+          description: A short description of the rule.
+          example: Reference Number and Transaction Amount
+        scores:
+          type: array
+          description: Various Fraud Score.
+          items:
+            $ref: '#/components/schemas/ExternalResponse'
+        tag:
+          $ref: '#/components/schemas/TagInfo'
+        processNonSecure:
+          type: boolean
+          description: Process Non 3DS Secure Transactions
+      description: Response to a fraud/velocity check request
+    TagInfo:
+      type: object
+      properties:
+        value:
+          type: string
+      description: Tag Information

@@ -1,6 +1,4 @@
-# Fraud Mitigation -- Coming Soon --
-
-## Protect Revenue With Chargeback Guarantee
+# -- Coming Soon -- Protect Revenue With Chargeback Guarantee
 
 ___
 
