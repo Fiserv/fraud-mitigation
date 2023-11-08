@@ -40,7 +40,7 @@
         - title: Control
           link: docs/control.md
         - title: Scoring
-          link: docs/scoring.md
+          link: docs/score.md
         - title: Guarantee
           link: docs/guarantee.md
 - sections:
