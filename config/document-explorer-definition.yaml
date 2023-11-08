@@ -35,6 +35,15 @@
     - title: Data Requirements
       link: docs/datareqs.md
 - sections:
+    - title: Features
+      sections:
+        - title: Control
+          link: docs/control.md
+        - title: Scoring
+          link: docs/scoring.md
+        - title: Guarantee
+          link: docs/guarantee.md
+- sections:
   - title: Release notes
     sections:
     - title: November 2023

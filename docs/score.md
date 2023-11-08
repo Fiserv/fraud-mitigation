@@ -1,6 +1,4 @@
-# Fraud Mitigation
-
-## Authorization Scoring
+# Authorization Scoring
 
 ___
 

@@ -1,6 +1,4 @@
-# Fraud Mitigation
-
-## Control Your Risk
+# Control Your Risk
 
 ___
 

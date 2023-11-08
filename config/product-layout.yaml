@@ -39,45 +39,45 @@ benefits:
   - title: Improve Customer Experience
     description: Ensure a seamless customer payment and checkout experience with decisions returned in milliseconds.
 guides:
-  - title: Control
-    description: Rule based engine with basic risk controls.
-    link: docs/control.md
-  - title: Score
-    description: Advanced machine learning score for transaction risk monitoring.
-    link: docs/score.md
-  - title: Guarantee
-    description: Chargeback liability protection.
-    link: docs/guarantee.md
+  - title: Online Payments
+    description: Protect online merchants by reducing fraud and improving approval rates.
+    link: docs/onlinepayments.md
+  - title: Identify Bad Actors
+    description: Empower the platform to root out serial refund and promotional fraudsters.
+    link: docs/identification.md
+  - title: Orchestration
+    description: Leverage a single gateway connection to provide linkage to numerous partner solutions.
+    link: docs/orchestration.md
 featuredFeatures:
   - title: Control
     groupName: Guides
     featured: true
-    description: Rule based engine with basic risk controls.
+    description: Rule based engine with basic risk controls. Core fraud detection capabilities based on rules-based engine enabling both preset and configurable rules.
     relatedDocs:
       - link: docs/control.md
         title: Control
     relatedAPIs:
       - type: post
-        path: /address
-        title: Add Address
+        path: /{gatewayName}/pre-evaluate/clientID/{clientID}
+        title: PreEvaluate
   - title: Score
     groupName: Guides
     featured: true
-    description: Advanced machine learning score for transaction risk monitoring.
+    description: Advanced machine learning score for transaction risk monitoring. Risk scoring applications for advanced fraud screening, currently available features include customized machine learning models, customer centric approach, advanced link analysis.
     relatedDocs:
       - link: docs/score.md
         title: Score
     relatedAPIs:
       - type: post
-        path: /address
-        title: Add Address
+        path: /{gatewayName}/pre-evaluate/clientID/{clientID}
+        title: PreEvaluate
   - title: Guarantee
     groupName: Guides
-    description: Chargeback liability protection.
+    description: Chargeback liability protection. Chargeback guarantee services provided by partnerships and powered by advanced AI/ML capabilities.
     relatedDocs:
       - link: docs/guarantee.md
         title: Guarantee
     relatedAPIs:
       - type: post
-        path: /address
-        title: Add Address
+        path: /{gatewayName}/pre-evaluate/clientID/{clientID}
+        title: PreEvaluate
