@@ -27,44 +27,57 @@
 # are granted or extended by this work or 
 # the delivery of this work
 ################################################################################
+
 header:
-  productName: REPLACEME
-  productionDescription: REPLACEME
-  whoIsItFor: REPLACEME
-  image: 
-    link: "/assets/images/Fiserv_Logo.jpg"
-    altText: REPLACEME™
+  productDescription: Fraud Mitigation provides merchants the ability to decision authorization based on a number of in flight component attributes. The underlying infrastructure provides the gateway an environment that ultimately protects the firms asset by recognizing fraud patterns and stopping transactions that may fit this mold. The integration provides quick and easy access to a combination of proprietary and partner capabilities.
+getStarted: /docs/getting-started.md
+benefits:
+  - title: Maximize Revenue
+    description: Increase the number of approved transactions, securely expand your business and increase wallet share.
+  - title: Prioritize Scalability
+    description: Automate decisions and lower operational cost to improve your team’s efficiency. Manage several fraud mitigation tools though a single vendor relationship.
+  - title: Improve Customer Experience
+    description: Ensure a seamless customer payment and checkout experience with decisions returned in milliseconds.
+guides:
+  - title: Online Payments
+    description: Protect online merchants by reducing fraud and improving approval rates.
+    link: docs/onlinepayments.md
+  - title: Identify Bad Actors
+    description: Empower the platform to root out serial refund and promotional fraudsters.
+    link: docs/identification.md
+  - title: Orchestration
+    description: Leverage a single gateway connection to provide linkage to numerous partner solutions.
+    link: docs/orchestration.md
 featuredFeatures:
-  - title: REPLACE ME
-    description:  REPLACE ME
-    tags: ["REPLACEME", "REPLACEME", "REPLACEME"]
-    bullets: ["REPLACEME", "REPLACEME" ]  
+  - title: Control
+    groupName: Guides
+    featured: true
+    description: Rule based engine with basic risk controls. Core fraud detection capabilities based on rules-based engine enabling both preset and configurable rules.
     relatedDocs:
-      - relatedDoc: 
-        title: REPLACEME
-        description: REPLACEME
-        link: ./docs/REPLACE-ME1.md
-      - relatedDoc: 
-        title: REPLACEME
-        description: REPLACEME
-        link: ./docs/REPLACE-ME2.md
-      - relatedDoc: 
-        title: REPLACEME
-        description: REPLACEME
-        link: ./docs/REPLACE-ME3.md
+      - link: docs/control.md
+        title: Control
     relatedAPIs:
-      - relatedAPI: 
-        title: REPLACEME
-        description: REPLACEME
-        type: "patch"        
-        path: "/v1/REPLACEME1"
-      - relatedAPI: 
-        title: REPLACEME
-        description: REPLACEME
-        type: "post"        
-        path: "/v1/REPLACEME2"
-      - relatedAPI: 
-        title: REPLACEME
-        description: REPLACEME
-        type: "get"        
-        path: "/v1/REPLACEME3"
+      - type: post
+        path: /{gatewayName}/pre-evaluate/clientID/{clientID}
+        title: PreEvaluate
+  - title: Score
+    groupName: Guides
+    featured: true
+    description: Advanced machine learning score for transaction risk monitoring. Risk scoring applications for advanced fraud screening, currently available features include customized machine learning models, customer centric approach, advanced link analysis.
+    relatedDocs:
+      - link: docs/score.md
+        title: Score
+    relatedAPIs:
+      - type: post
+        path: /{gatewayName}/pre-evaluate/clientID/{clientID}
+        title: PreEvaluate
+  - title: Guarantee
+    groupName: Guides
+    description: Chargeback liability protection. Chargeback guarantee services provided by partnerships and powered by advanced AI/ML capabilities.
+    relatedDocs:
+      - link: docs/guarantee.md
+        title: Guarantee
+    relatedAPIs:
+      - type: post
+        path: /{gatewayName}/pre-evaluate/clientID/{clientID}
+        title: PreEvaluate
