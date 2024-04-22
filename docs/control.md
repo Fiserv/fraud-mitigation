@@ -6,7 +6,7 @@ Address common fraud attacks and immediate chargeback concerns. Define your own 
 
 ---
 
-![control.png](../assets/images/control.png)
+![control_img.png](../assets/images/control_img.png)
 
 
 
