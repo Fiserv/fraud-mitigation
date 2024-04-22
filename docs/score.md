@@ -6,7 +6,7 @@ Drive decision-making, identify fraudulent networks and authenticate valid custo
 
 ---
 
-![score.png](../assets/images/score.png)
+![score_img.png](../assets/images/score_img.png)
 
 
 

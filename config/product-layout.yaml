@@ -52,7 +52,7 @@ featuredFeatures:
   - title: Control
     groupName: Guides
     featured: true
-    description: Rule based engine with basic risk controls. Core fraud detection capabilities based on rules-based engine enabling both preset and configurable rules.
+    description: Identify unusual payment patterns and help stop fraudulent transactions by leveraging a flexible rules-based solution with built-in standard and customizable rulesets.
     relatedDocs:
       - link: docs/control.md
         title: Control
@@ -63,7 +63,7 @@ featuredFeatures:
   - title: Score
     groupName: Guides
     featured: true
-    description: Advanced machine learning score for transaction risk monitoring. Risk scoring applications for advanced fraud screening, currently available features include customized machine learning models, customer centric approach, advanced link analysis.
+    description: Drive decision-making, identify fraudulent networks and authenticate valid customers by evaluating transactions in real-time with machine learning-based scoring tailored to your business.
     relatedDocs:
       - link: docs/score.md
         title: Score
@@ -73,7 +73,7 @@ featuredFeatures:
         title: PreEvaluate
   - title: Guarantee
     groupName: Guides
-    description: Chargeback liability protection. Chargeback guarantee services provided by partnerships and powered by advanced AI/ML capabilities.
+    description: Shift the financial risk and approve more online orders with chargeback guarantee.
     relatedDocs:
       - link: docs/guarantee.md
         title: Guarantee

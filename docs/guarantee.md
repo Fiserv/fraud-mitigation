@@ -1,4 +1,4 @@
-# -- Coming Soon -- Protect Revenue With Chargeback Guarantee
+# Protect Revenue With Chargeback Guarantee
 
 ___
 
@@ -6,7 +6,7 @@ An additional layer of protection that eliminates the merchant's chargeback liab
 
 ---
 
-![guarantee.png](../assets/images/guarantee.png)
+![guarantee_img.png](../assets/images/guarantee_img.png)
 
 
 
