@@ -17,6 +17,6 @@ With priority placed on scalability and ease of use, merchants can integrate int
 
 ## Data Integration
 
->Data is key to identifying fraudulent patterns for business. Provide the most relevant [attributes](datareqs.md) for the most accurate fraud score.
+>Data is key to identifying fraudulent patterns for business. Provide the most relevant [attributes](../docs/datareqs.md) for the most accurate fraud score.
 
 
