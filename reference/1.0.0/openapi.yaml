@@ -120,30 +120,31 @@ paths:
   #--------------------------------------------------------------------------------------
   /fraudVAS/enhancedData/send/{clientID}:
     post:
-    tags:
-      - Enhanced Data Controller
-    operationId: send
-    parameters:
-      - name: clientID
-        in: path
-        required: true
-        schema:
-          type: string
-    requestBody:
-      content:
-        application/json:
+      tags:
+        - Enhanced Data Controller
+      description: Enhanced data
+      operationId: send
+      parameters:
+        - name: clientID
+          in: path
+          required: true
           schema:
-            $ref: '#/components/schemas/FraudVASRequestEnhancedData'
-      required: true
-    responses:
-      '200':
-        description: OK
+            type: string
+      requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EnhancedDataResponse'
-    x-proxy-name: send
-    x-group-name: EnhancedData
+              $ref: '#/components/schemas/FraudVASRequestEnhancedData'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnhancedDataResponse'
+      x-proxy-name: send
+      x-group-name: EnhancedData
 #--------------------------------------------------------------------------------------
 # COMPONENTS
 #--------------------------------------------------------------------------------------
