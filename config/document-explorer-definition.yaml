@@ -43,6 +43,8 @@
           link: docs/score.md
         - title: Guarantee
           link: docs/guarantee.md
+        - title: Enhanced Data
+          link: docs/enhanceddata.md
 - sections:
   - title: Release notes
     sections:
