@@ -1,6 +1,6 @@
 # Online Payments
 
-___
+---
 
 Fraud Mitigation provides the type of scalable solution that grows with your business. Protect online purchases and stop fraudulent activity within the authorization flow. Get real time fraud scoring for in flight transactions before sending to issuers.
 
