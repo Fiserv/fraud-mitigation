@@ -137,8 +137,8 @@ paths:
         required: true
       responses:
         '200':
-        description: OK
-        content:
+          description: OK
+          content:
           application/json:
             schema:
               $ref: '#/components/schemas/EnhancedDataResponse'
