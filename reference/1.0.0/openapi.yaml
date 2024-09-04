@@ -130,7 +130,7 @@ paths:
         schema:
           type: string
       requestBody:
-      content:
+        content:
         application/json:
           schema:
             $ref: '#/components/schemas/FraudVASRequestEnhancedData'
