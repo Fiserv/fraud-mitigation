@@ -81,13 +81,3 @@ featuredFeatures:
       - type: post
         path: /{gatewayName}/pre-evaluate/clientID/{clientID}
         title: PreEvaluate
-  - title: Enhanced Data
-    groupName: Guides
-    description: Shift the financial risk and approve more online orders with chargeback guarantee.
-    relatedDocs:
-      - link: docs/enhanceddata.md
-        title: Enhanced Data
-    relatedAPIs:
-      - type: post
-        path: /fvas-enhanced-data/v1/send/bbuy
-        title: PreEvaluate
