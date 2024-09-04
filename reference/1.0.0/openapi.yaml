@@ -121,7 +121,7 @@ paths:
   /fraudVAS/enhancedData/send/{clientID}:
     post:
       tags:
-      - Enhanced Data Controller
+        - Enhanced Data Controller
       operationId: send
     parameters:
       - name: clientID
@@ -129,19 +129,19 @@ paths:
         required: true
         schema:
           type: string
-        requestBody:
-          content:
-              application/json:
+    requestBody:
+      content:
+        application/json:
           schema:
-          $ref: '#/components/schemas/FraudVASRequestEnhancedData'
-          required: true
-        responses:
-          "200":
-          description: OK
-          content:
+            $ref: '#/components/schemas/FraudVASRequestEnhancedData'
+      required: true
+    responses:
+      '200':
+        description: OK
+        content:
           application/json:
-          schema:
-            $ref: '#/components/schemas/EnhancedDataResponse'
+            schema:
+              $ref: '#/components/schemas/EnhancedDataResponse'
 #--------------------------------------------------------------------------------------
 # COMPONENTS
 #--------------------------------------------------------------------------------------
