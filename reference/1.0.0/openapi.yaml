@@ -129,17 +129,17 @@ paths:
         required: true
         schema:
           type: string
-    requestBody:
-      content:
-      application/json:
-        schema:
+        requestBody:
+          content:
+              application/json:
+          schema:
           $ref: '#/components/schemas/FraudVASRequestEnhancedData'
-      required: true
-    responses:
-      "200":
-      description: OK
-      content:
-        application/json:
+          required: true
+        responses:
+          "200":
+          description: OK
+          content:
+          application/json:
           schema:
             $ref: '#/components/schemas/EnhancedDataResponse'
 #--------------------------------------------------------------------------------------
