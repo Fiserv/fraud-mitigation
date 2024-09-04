@@ -139,9 +139,9 @@ paths:
         '200':
           description: OK
           content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EnhancedDataResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnhancedDataResponse'
     x-proxy-name: send
     x-group-name: EnhancedData
 #--------------------------------------------------------------------------------------
