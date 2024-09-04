@@ -71,49 +71,49 @@ paths:
     x-group-name: Gateway
   /{gatewayName}/post-evaluate/clientID/{clientID}:
     post:
-    tags:
-      - Fraud Mitigation Exec services
-    description: Applies various post-payment fraud and velocity controls based
-      on the request
-    operationId: postEvaluate
-    parameters:
-      - name: gatewayName
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: clientID
-        in: path
-        required: true
-        schema:
-          type: string
-    requestBody:
-      content:
-        application/json:
+      tags:
+        - Fraud Mitigation Exec services
+      description: Applies various post-payment fraud and velocity controls based
+        on the request
+      operationId: postEvaluate
+      parameters:
+        - name: gatewayName
+          in: path
+          required: true
           schema:
-            $ref: '#/components/schemas/FraudVASRequest'
-      required: true
-    responses:
-      '200':
-        description: OK
+            type: string
+        - name: clientID
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FraudVASResponse'
-      '400':
-        description: Bad request. Validation exception.
-        content:
-          application/json:
-            schema:
-              type: string
-      '5XX':
-        description: Unexpected error.
-        content:
-          application/json:
-            schema:
-              type: string
-    x-proxy-name: postEvaluate
-    x-group-name: Gateway
+              $ref: '#/components/schemas/FraudVASRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FraudVASResponse'
+        '400':
+          description: Bad request. Validation exception.
+          content:
+            application/json:
+              schema:
+                type: string
+        '5XX':
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                type: string
+      x-proxy-name: postEvaluate
+      x-group-name: Gateway
 
   #--------------------------------------------------------------------------------------
   # Enhanced Data
