@@ -7,4 +7,4 @@ Improve approval rates while also fighting online fraud by preemptively submitti
 ---
 
 
-![enhanced_data.png](../assets/images/score_img.png)
+![enhanced_data.png](../assets/images/enhanced_data.png)
