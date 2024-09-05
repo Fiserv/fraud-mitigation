@@ -118,7 +118,7 @@ paths:
   #--------------------------------------------------------------------------------------
   # Enhanced Data
   #--------------------------------------------------------------------------------------
-  /fraudVAS/enhancedData/send/{clientID}:
+  /send/{clientID}:
     post:
       tags:
         - Enhanced Data Controller
