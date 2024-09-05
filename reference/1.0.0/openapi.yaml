@@ -9,6 +9,7 @@ servers:
   - server1:
       path: /{gatewayName}/pre-evaluate/clientID/{clientID}
             /{gatewayName}/post-evaluate/clientID/{clientID}
+      details: FraudMitigation BasePath
   - url: https://connect-qa.fiservapis.com/fvas-mitigation-v1/
     description: QA external endpoint
   - url: https://connect-dev.fiservapis.com/fvas-mitigation-v1/
