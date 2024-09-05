@@ -89,5 +89,5 @@ featuredFeatures:
         title: Enhanced Data
     relatedAPIs:
       - type: post
-        path: /fvas-enhanced-data/v1/send/bbuy
+        path: /send/{clientID}
         title: PreEvaluate
