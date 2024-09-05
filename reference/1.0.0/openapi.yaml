@@ -5,13 +5,6 @@ info:
     a customized scoring engine. Decisions are rendered within the authorization flow
     which eliminates the need for additional development time for merchants.
   version: v0
-servers:
-  - url: https://connect-qa.fiservapis.com/fvas-mitigation-v1/
-    description: QA external endpoint
-  - url: https://connect-dev.fiservapis.com/fvas-mitigation-v1/
-    description: DEV external endpoint
-  - url: https://connect-uat.fiservapis.com/fvas-mitigation-v1/
-    description: Stage/CAT external endpoint
 tags:
   - name: Fraud Mitigation Exec services
     description: Fraud Mitigation Exec services
@@ -26,6 +19,13 @@ paths:
   #--------------------------------------------------------------------------------------
   /{gatewayName}/pre-evaluate/clientID/{clientID}:
     post:
+      servers:
+        - url: https://connect-qa.fiservapis.com/fvas-mitigation-v1/
+          description: QA external endpoint
+        - url: https://connect-dev.fiservapis.com/fvas-mitigation-v1/
+          description: DEV external endpoint
+        - url: https://connect-uat.fiservapis.com/fvas-mitigation-v1/
+          description: Stage/CAT external endpoint
       tags:
         - Fraud Mitigation Exec services
       description: Applies various pre-payment fraud and velocity controls based on
@@ -71,6 +71,13 @@ paths:
       x-group-name: Gateway
   /{gatewayName}/post-evaluate/clientID/{clientID}:
     post:
+      servers:
+        - url: https://connect-qa.fiservapis.com/fvas-mitigation-v1/
+          description: QA external endpoint
+        - url: https://connect-dev.fiservapis.com/fvas-mitigation-v1/
+          description: DEV external endpoint
+        - url: https://connect-uat.fiservapis.com/fvas-mitigation-v1/
+          description: Stage/CAT external endpoint
       tags:
         - Fraud Mitigation Exec services
       description: Applies various post-payment fraud and velocity controls based
@@ -120,6 +127,9 @@ paths:
   #--------------------------------------------------------------------------------------
   /send/{clientID}:
     post:
+      servers:
+        - url: https://connect-uat.fiservapis.com/fvas-enhanced-data/v1/
+          description: Stage/CAT external endpoint
       tags:
         - Enhanced Data Controller
       description: Enhanced data
