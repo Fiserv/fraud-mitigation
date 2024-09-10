@@ -126,10 +126,10 @@ paths:
   # Enhanced Data
   #--------------------------------------------------------------------------------------
   /send/{clientID}:
-    basePath: https://connect-qa.fiservapis.com/fvas-enhanced-data/v1/
     post:
       servers:
         - url: https://connect-uat.fiservapis.com/fvas-enhanced-data/v1/
+          basePath: https://connect-qa.fiservapis.com/fvas-enhanced-data/v1/
           description: Stage/CAT external endpoint
       tags:
         - Enhanced Data Controller
