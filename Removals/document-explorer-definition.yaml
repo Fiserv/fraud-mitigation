@@ -29,23 +29,11 @@
 ################################################################################
 
 - sections:
-  - title: Overview
-    #link: docs/getting-started.md
+  - title: Getting Started
+    link: docs/getting-started.md
 - sections:
-    - title: API Integration
-      #link: docs/datareqs.md
-- sections:
-    - title: Manage Keys
-      #link: docs/datareqs.md
-- sections:
-    - title: Data
-      #link: docs/datareqs.md
-- sections:
-    - title: Validation
-      #link: docs/datareqs.md
-- sections:
-    - title: Responses
-      #link: docs/datareqs.md
+    - title: Data Requirements
+      link: docs/datareqs.md
 - sections:
     - title: Features
       sections:
