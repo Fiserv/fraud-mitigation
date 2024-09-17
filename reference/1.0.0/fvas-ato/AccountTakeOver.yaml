@@ -1,0 +1,662 @@
+openapi: 3.0.1
+info:
+  title: Fraud Mitigation
+  description: Fraud Mitigation Score provides real time fraud protection through
+    a customized scoring engine. Decisions are rendered within the authorization flow
+    which eliminates the need for additional development time for merchants.
+  version: v0
+servers:
+  - url: https://connect-qa.fiservapis.com/fvas-ato/v1/
+    description: QA external endpoint
+  - url: https://connect-uat.fiservapis.com/fvas-ato/v1/
+    description: CAT external endpoint
+  - url: https://connect-dev.fiservapis.com/fvas-ato/v1/
+    description: DEV external endpoint
+paths:
+  /reclaim/{clientID}:
+    post:
+      tags:
+        - Account Takeover Controller
+      operationId: processLogin
+      parameters:
+        - name: clientID
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReclaimRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReclaimResponse'
+      x-proxy-name: Reclaim
+      x-group-name: Account Take Over
+  login/{clientID}:
+    post:
+      tags:
+        - Account Takeover Controller
+      operationId: processLogin_1
+      parameters:
+        - name: clientID
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FraudVASResponse'
+      x-proxy-name: Login
+      x-group-name: Account Take Over
+components:
+  schemas:
+    ATOEvent:
+      type: object
+      properties:
+        loginId:
+          type: string
+          description: The unique ID of a login which indicated account takeover had
+            taken place.
+        deviceId:
+          type: string
+          description: The unique ID of a device which indicated account takeover
+            had taken place.
+        orderId:
+          type: string
+          description: The unique ID of an order which indicated account takeover
+            had taken place.
+      description: An array of objects containing IDs for the first account takeover
+        events seen on a customer account. Each object in the array may only contain
+        one ID.
+    Customer:
+      required:
+        - customerId
+        - method
+      type: object
+      properties:
+        method:
+          type: string
+          description: Indicates who reported that account takeover took place
+          enum:
+            - PasswordReset
+            - AccountDeleted
+            - Other
+        customerId:
+          type: string
+          description: The ID of the customer whose account was reclaimed
+        reportedBy:
+          type: string
+          description: Indicates who reported that account takeover took place
+          enum:
+            - CUSTOMER
+            - MERCHANT
+            - RAVELIN
+        atoEvents:
+          type: array
+          description: An array of objects containing IDs for the first account takeover
+            events seen on a customer account. Each object in the array may only contain
+            one ID.
+          items:
+            $ref: '#/components/schemas/ATOEvent'
+      description: An array of up to 100 customers whose accounts have been reclaimed
+    ReclaimRequest:
+      required:
+        - adapter
+        - apiTraceId
+        - clientID
+        - customers
+        - mid
+        - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          description: Unix timestamp with milliseconds
+          format: int64
+        customers:
+          type: array
+          description: An array of up to 100 customers whose accounts have been reclaimed
+          items:
+            $ref: '#/components/schemas/Customer'
+        adapter:
+          type: string
+          description: Fraud VAS Adapter
+          enum:
+            - None
+            - CommerceHub
+            - uCom
+            - Clover
+            - NorthFrontEnd
+            - BuypassFrontEnd
+            - AutoBlock
+            - CardPointe
+            - Portfolio
+            - IPGBrazil
+            - CompassFrontEnd
+            - OmahaFrontEnd
+            - IPGAPAC
+            - Aurus
+            - SnapPay
+            - PaySecure
+        clientID:
+          type: string
+          description: A unique ID used to identify the Client.
+        apiTraceId:
+          type: string
+          description: A UUID request identifier in API that can be used to request
+            logs from the support team.
+          example: 1234567-a1234567-b12345-67c1234
+        mid:
+          type: string
+    ReclaimResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        message:
+          type: string
+    App:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "The name or brand of the app, used to segment logins. Use\
+            \ the name that customer sees when installing and using the app, or the\
+            \ website title. Shouldn't repeat the platform or domain."
+        platform:
+          type: string
+          enum:
+            - ios
+            - android
+            - web
+            - mobile_web
+        domain:
+          type: string
+      description: The mobile or web app that this login was done from.
+    AuthenticationMechanism:
+      type: object
+      properties:
+        password:
+          $ref: '#/components/schemas/Password'
+        social:
+          $ref: '#/components/schemas/Social'
+        oneTimeCode:
+          $ref: '#/components/schemas/OneTimeCode'
+        u2f:
+          $ref: '#/components/schemas/U2F'
+        rsaKey:
+          $ref: '#/components/schemas/RSAKey'
+        smsCode:
+          $ref: '#/components/schemas/SMSCode'
+        magiclink:
+          $ref: '#/components/schemas/MagicLink'
+        recaptcha:
+          $ref: '#/components/schemas/Recaptcha'
+        bioMetric:
+          $ref: '#/components/schemas/BioMetric'
+        pushNotification:
+          $ref: '#/components/schemas/PushNotification'
+      description: At least one authentication mechanism must be provided. More than
+        one may be provided. For example a password and a oneTimeCode may be used
+        to authenticate.
+    BioMetric:
+      type: object
+      properties:
+        success:
+          type: boolean
+        failureReason:
+          type: string
+          enum:
+            - BAD_PASSWORD
+            - UNKNOWN_USERNAME
+            - AUTHENTICATION_FAILURE
+            - INTERNAL_ERROR
+            - RATE_LIMIT
+            - BANNED_USER
+            - TIMEOUT
+            - SOCIAL_FAILURE
+            - CODE_TIMEOUT
+            - INVALID_CODE
+            - INVALID_KEY
+            - INVALID_LINK
+            - FAILED_TEST
+    Custom:
+      type: object
+      properties:
+        json:
+          type: string
+    Device:
+      type: object
+      properties:
+        deviceId:
+          type: string
+        ipAddress:
+          type: string
+        userAgent:
+          type: string
+        model:
+          type: string
+        os:
+          type: string
+        type:
+          type: string
+          enum:
+            - computer
+            - phone
+            - tablet
+        manufacturer:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        custom:
+          type: object
+        language:
+          type: string
+      description: "While Device is not a required field on the login event, it is\
+        \ highly recommended as it is a vital signal to account breaches. The most\
+        \ important Device fields are deviceId and ipAddress"
+    Location:
+      type: object
+      properties:
+        country:
+          type: string
+        postalCode:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        addresseeName:
+          type: string
+        street1:
+          type: string
+        street2:
+          type: string
+        neighbourhood:
+          type: string
+        zone:
+          type: string
+        city:
+          type: string
+        region:
+          type: string
+        poBoxNumber:
+          type: string
+        custom:
+          $ref: '#/components/schemas/Custom'
+      description: Location is optional. If you do have location as part of your flow
+        this can be very useful to localise ongoing or repeat attackers.
+    Login:
+      required:
+        - app
+        - authenticationMechanism
+        - success
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+          description: The username of the customer. This is the unique string that
+            ties this particular customer to the authentication mechanism used. Typically
+            this is the email address.
+        success:
+          type: boolean
+          description: If the login attempt was successful and access was granted.
+        authenticationMechanism:
+          $ref: '#/components/schemas/AuthenticationMechanism'
+        app:
+          $ref: '#/components/schemas/App'
+        customerId:
+          type: string
+          description: customerId is the unique identifier for a customer. This identifier
+            does not change even if the username is changed. This is optional for
+            login events as you will see failed logins against usernames that do not
+            exist in your system and therefore do not have a customerId. Please send
+            this on login attempts where a customerId is available.
+    LoginRequest:
+      required:
+        - adapter
+        - apiTraceId
+        - clientID
+        - login
+        - mid
+        - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          description: Unix timestamp with milliseconds
+          format: int64
+        login:
+          $ref: '#/components/schemas/Login'
+        device:
+          $ref: '#/components/schemas/Device'
+        location:
+          $ref: '#/components/schemas/Location'
+        adapter:
+          type: string
+          description: Fraud VAS Adapter
+          enum:
+            - None
+            - CommerceHub
+            - uCom
+            - Clover
+            - NorthFrontEnd
+            - BuypassFrontEnd
+            - AutoBlock
+            - CardPointe
+            - Portfolio
+            - IPGBrazil
+            - CompassFrontEnd
+            - OmahaFrontEnd
+            - IPGAPAC
+            - Aurus
+            - SnapPay
+            - PaySecure
+        clientID:
+          type: string
+          description: A unique ID used to identify the Client.
+        apiTraceId:
+          type: string
+          description: A UUID request identifier in API that can be used to request
+            logs from the support team.
+          example: 1234567-a1234567-b12345-67c1234
+        mid:
+          type: string
+    MagicLink:
+      type: object
+      properties:
+        transport:
+          type: string
+        phoneNumber:
+          type: string
+        success:
+          type: boolean
+        failureReason:
+          type: string
+          enum:
+            - BAD_PASSWORD
+            - UNKNOWN_USERNAME
+            - AUTHENTICATION_FAILURE
+            - INTERNAL_ERROR
+            - RATE_LIMIT
+            - BANNED_USER
+            - TIMEOUT
+            - SOCIAL_FAILURE
+            - CODE_TIMEOUT
+            - INVALID_CODE
+            - INVALID_KEY
+            - INVALID_LINK
+            - FAILED_TEST
+    OneTimeCode:
+      type: object
+      properties:
+        success:
+          type: boolean
+        failureReason:
+          type: string
+          enum:
+            - BAD_PASSWORD
+            - UNKNOWN_USERNAME
+            - AUTHENTICATION_FAILURE
+            - INTERNAL_ERROR
+            - RATE_LIMIT
+            - BANNED_USER
+            - TIMEOUT
+            - SOCIAL_FAILURE
+            - CODE_TIMEOUT
+            - INVALID_CODE
+            - INVALID_KEY
+            - INVALID_LINK
+            - FAILED_TEST
+    Password:
+      type: object
+      properties:
+        passwordHashed:
+          type: string
+        emailPasswordSHA256:
+          type: string
+        passwordSHA1SHA256:
+          type: string
+        success:
+          type: boolean
+        failureReason:
+          type: string
+          enum:
+            - BAD_PASSWORD
+            - UNKNOWN_USERNAME
+            - AUTHENTICATION_FAILURE
+            - INTERNAL_ERROR
+            - RATE_LIMIT
+            - BANNED_USER
+            - TIMEOUT
+            - SOCIAL_FAILURE
+            - CODE_TIMEOUT
+            - INVALID_CODE
+            - INVALID_KEY
+            - INVALID_LINK
+            - FAILED_TEST
+    PushNotification:
+      type: object
+      properties:
+        success:
+          type: boolean
+        failureReason:
+          type: string
+          enum:
+            - BAD_PASSWORD
+            - UNKNOWN_USERNAME
+            - AUTHENTICATION_FAILURE
+            - INTERNAL_ERROR
+            - RATE_LIMIT
+            - BANNED_USER
+            - TIMEOUT
+            - SOCIAL_FAILURE
+            - CODE_TIMEOUT
+            - INVALID_CODE
+            - INVALID_KEY
+            - INVALID_LINK
+            - FAILED_TEST
+    RSAKey:
+      type: object
+      properties:
+        success:
+          type: boolean
+        failureReason:
+          type: string
+          enum:
+            - BAD_PASSWORD
+            - UNKNOWN_USERNAME
+            - AUTHENTICATION_FAILURE
+            - INTERNAL_ERROR
+            - RATE_LIMIT
+            - BANNED_USER
+            - TIMEOUT
+            - SOCIAL_FAILURE
+            - CODE_TIMEOUT
+            - INVALID_CODE
+            - INVALID_KEY
+            - INVALID_LINK
+            - FAILED_TEST
+    Recaptcha:
+      type: object
+      properties:
+        success:
+          type: boolean
+        failureReason:
+          type: string
+          enum:
+            - BAD_PASSWORD
+            - UNKNOWN_USERNAME
+            - AUTHENTICATION_FAILURE
+            - INTERNAL_ERROR
+            - RATE_LIMIT
+            - BANNED_USER
+            - TIMEOUT
+            - SOCIAL_FAILURE
+            - CODE_TIMEOUT
+            - INVALID_CODE
+            - INVALID_KEY
+            - INVALID_LINK
+            - FAILED_TEST
+    SMSCode:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        success:
+          type: boolean
+        failureReason:
+          type: string
+          enum:
+            - BAD_PASSWORD
+            - UNKNOWN_USERNAME
+            - AUTHENTICATION_FAILURE
+            - INTERNAL_ERROR
+            - RATE_LIMIT
+            - BANNED_USER
+            - TIMEOUT
+            - SOCIAL_FAILURE
+            - CODE_TIMEOUT
+            - INVALID_CODE
+            - INVALID_KEY
+            - INVALID_LINK
+            - FAILED_TEST
+    Social:
+      type: object
+      properties:
+        success:
+          type: boolean
+        failureReason:
+          type: string
+          enum:
+            - BAD_PASSWORD
+            - UNKNOWN_USERNAME
+            - AUTHENTICATION_FAILURE
+            - INTERNAL_ERROR
+            - RATE_LIMIT
+            - BANNED_USER
+            - TIMEOUT
+            - SOCIAL_FAILURE
+            - CODE_TIMEOUT
+            - INVALID_CODE
+            - INVALID_KEY
+            - INVALID_LINK
+            - FAILED_TEST
+        socialProvider:
+          type: string
+    U2F:
+      type: object
+      properties:
+        success:
+          type: boolean
+        failureReason:
+          type: string
+          enum:
+            - BAD_PASSWORD
+            - UNKNOWN_USERNAME
+            - AUTHENTICATION_FAILURE
+            - INTERNAL_ERROR
+            - RATE_LIMIT
+            - BANNED_USER
+            - TIMEOUT
+            - SOCIAL_FAILURE
+            - CODE_TIMEOUT
+            - INVALID_CODE
+            - INVALID_KEY
+            - INVALID_LINK
+            - FAILED_TEST
+    ExternalResponse:
+      type: object
+      properties:
+        score:
+          type: integer
+          format: int32
+        timeTaken:
+          type: integer
+          format: int32
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - Approve
+            - Review
+            - Decline
+            - Request3DS
+        token:
+          type: string
+      description: Various Fraud Score.
+    FraudVASResponse:
+      required:
+        - apiTraceId
+        - approvalStatus
+        - description
+        - ruleID
+        - ruleVersion
+      type: object
+      properties:
+        ruleID:
+          type: string
+          description: The id of reason for declining the transaction.
+          example: 43rfe-43ffef-4334341
+        ruleVersion:
+          type: integer
+          description: The version of rule for declining the transaction.
+          format: int32
+          example: 1
+        approvalStatus:
+          type: string
+          description: The status of the fraud check
+          example: Approve
+          enum:
+            - Approve
+            - Review
+            - Decline
+            - Request3DS
+        apiTraceId:
+          type: string
+          description: Request identifier in API that can be used to request logs
+            from the support team.
+          example: 1234567a1234567b1234567c1234567d
+        description:
+          type: string
+          description: A short description of the rule.
+          example: Reference Number and Transaction Amount
+        scores:
+          type: array
+          description: Various Fraud Score.
+          items:
+            $ref: '#/components/schemas/ExternalResponse'
+        tag:
+          $ref: '#/components/schemas/TagInfo'
+        processNonSecure:
+          type: boolean
+          description: Process Non 3DS Secure Transactions
+      description: Response to a fraud/velocity check request
+    TagInfo:
+      type: object
+      properties:
+        value:
+          type: string
+      description: Tag Information
