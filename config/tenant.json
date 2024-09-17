@@ -10,7 +10,7 @@
         "version": "1.0.0",
         "versionType": "major",
         "releaseNotesPath": "docs/release-notes/2023/november.md",
-        "apiSpecFileNames": ["openapi"]
+        "apiSpecFileNames": ["fvas-enhanced-data/enhanced.yaml","fvas-mitigation-v1/fvas-mitigation.yaml"]
       }
   ],
   "getStartedFilePath": "/docs/getting-started.md",
