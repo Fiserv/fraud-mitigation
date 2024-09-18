@@ -38,8 +38,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ReclaimResponse'
       x-proxy-name: Reclaim
-      x-group-name: Account Take Over
-  login/{clientID}:
+      x-group-name: AccountTakeOver
+  /login/{clientID}:
     post:
       tags:
         - Account Takeover Controller
@@ -64,7 +64,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/FraudVASResponse'
       x-proxy-name: Login
-      x-group-name: Account Take Over
+      x-group-name: AccountTakeOver
 components:
   schemas:
     ATOEvent:
