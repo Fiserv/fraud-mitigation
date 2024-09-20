@@ -1,6 +1,10 @@
 # Data – Scoring
 
-<pre>Integrate with the scoring solution and leverage machine learning based models for improved fraud detection.</pre>  
+---
+
+Integrate with the scoring solution and leverage machine learning based models for improved fraud detection.
+
+---
 
 **Required** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  **Recommended**
 

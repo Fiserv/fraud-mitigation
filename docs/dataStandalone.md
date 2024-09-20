@@ -1,6 +1,10 @@
 # Data – Standalone
 
-<pre>Benefit from our industry specific scoring models whether or not your business acquires with us.</pre>
+---
+
+Benefit from our industry specific scoring models whether or not your business acquires with us.
+
+---
 
 **Required** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  **Recommended**
 
