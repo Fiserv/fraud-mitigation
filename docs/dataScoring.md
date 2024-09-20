@@ -6,31 +6,21 @@ Integrate with the scoring solution and leverage machine learning based models f
 
 ---
 
-**Required** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  **Recommended**
-
-ClientId  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Billing Address
-
-ApiTraceId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Customer Data
-
-Transaction Type &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Device Data
-
-Transaction Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Card Expiry Date
-
-Currency
-
-Total
-
-CardData
-
-Mid
-
-Email
-
-IP address
-
-EcomURL
-
+**Required** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Recommended**
+``` text
+ClientId                   Billing Address
+ApiTraceId                 Customer Data
+Transaction Type           Device Data
+Transaction Time           Card Expiry Date
+Currency                   
+Total                      
+CardData                   
+Mid                        
+Email                      
+IP address                 
+EcomURL                    
 ShippingItem
+```
 
 
 
