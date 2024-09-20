@@ -1,6 +1,10 @@
 # Fraud Identification
 
-<pre>Through use of statistical modeling and historical patterns many of the fraud types can be identified and mitigated.</pre>
+---
+
+Through use of statistical modeling and historical patterns many of the fraud types can be identified and mitigated.
+
+---
 
 **ML/AI**
 

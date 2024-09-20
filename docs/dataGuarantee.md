@@ -1,6 +1,10 @@
 # Data – Guarantee
 
-<pre>Guarantee business transactions against fraudulent chargebacks</pre>  
+---
+
+Guarantee business transactions against fraudulent chargebacks.
+
+---
 
 **Required** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  **Recommended**
 

@@ -1,6 +1,10 @@
 # Fraud Types
 
-<pre> Learn about the many ways that fraud can occur which puts ecommerce businesses at risk of chargebacks.</pre>
+---
+
+Learn about the many ways that fraud can occur which puts ecommerce businesses at risk of chargebacks.
+
+---
 
 **Card testing**
 

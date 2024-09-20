@@ -1,6 +1,10 @@
 # Integration
 
-<pre>Data is key to determining fraud activity. Include additional customer, card and or device information can significantly improve scoring performance. Learn about what attributes are most effective in the evaluation of fraud.</pre>
+---
+
+Data is key to determining fraud activity. Include additional customer, card and or device information can significantly improve scoring performance. Learn about what attributes are most effective in the evaluation of fraud.
+
+---
 
 ### Features
 

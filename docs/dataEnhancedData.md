@@ -1,6 +1,10 @@
 # Data – Enhanced Data
 
-<pre>Improve approval rates by supplying additional data points that are widely recognized as key to fraud mitigation. Do so seamlessly to your customers as part of the current authorization flow.</pre>  
+---
+
+Improve approval rates by supplying additional data points that are widely recognized as key to fraud mitigation. Do so seamlessly to your customers as part of the current authorization flow.
+
+---
 
 **Required** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  **Recommended**
 
