@@ -7,19 +7,16 @@ Control provides a customized set of industry specific rules for merchants to co
 ---
 
 **Required** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Recommended**
+    
 
-ClientId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Email
+```
+Required                        Recommended
 
-ApiTraceId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IPaddress
-
-Transaction Type &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Billing Address
-
-Transaction Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Customer Data
-
-Currency &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Device Data
-
-Total
-
+ClientId                        Email
+ApiTraceId                      IP address
+Transaction Type                Billing Address
+Currency                        Customer Data
+Total                           Device Data
 CardData
-
 Mid
+```
