@@ -10,8 +10,9 @@ Control provides a customized set of industry specific rules for merchants to co
 ClientId                   Email
 ApiTraceId                 IP address
 Transaction Type           Billing Address
-Currency                   Customer Data
-Total                      Device Data
+Transaction Time           Customer Data
+Currency                   Device Data 
+Total                      
 CardData
 Mid
 ```
