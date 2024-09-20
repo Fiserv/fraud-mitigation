@@ -8,18 +8,18 @@ Control provides a customized set of industry specific rules for merchants to co
 
 **Required** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Recommended**
 
-`ClientId   `                                                                      `Email`
+ClientId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Email
 
-`ApiTraceId     `                                                                  `IPaddress`
+ApiTraceId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IPaddress
 
-`Transaction Type   `                                                              `Billing Address`
+Transaction Type &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Billing Address
 
-`Transaction Time`                                                                 `Customer Data`
+Transaction Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Customer Data
 
-`Currency`                                                                         `Device Data`
+Currency &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Device Data
 
-`Total`
+Total
 
-`CardData`
+CardData
 
-`Mid`
+Mid
