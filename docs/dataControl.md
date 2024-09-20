@@ -6,10 +6,7 @@ Control provides a customized set of industry specific rules for merchants to co
 
 ---
 
-**Required** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Recommended**
-    
-
-```
+``` textmate
 Required                        Recommended
 
 ClientId                        Email
