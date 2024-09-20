@@ -1,7 +1,10 @@
 # Understanding Fraud Tools
 
-####
+---
+
 Fraud Mitigation provides fraud protection in real time within the merchant's current authorization lifecycle. Maximize merchant revenue by reducing chargeback and refund rates. With priority placed on scalability and ease of use, merchants can integrate into fraud ecosystem with minimal development cycles.
+
+---
 
 **What is fraud ?**
 Fraud occurs when a bad actor attempts to steal goods and services by utilizing another person's information and uses it to make unauthorized purchases. 
