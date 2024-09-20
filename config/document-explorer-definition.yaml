@@ -53,7 +53,7 @@
             - title: Guarantee
               link: docs/dataGuarantee.md
             - title: Enhanced Data
-              link: docs/enhanceddata.md
+              link: docs/dataEnhancedData.md
             - title: Standalone
               link: docs/dataStandalone.md
 - sections:
