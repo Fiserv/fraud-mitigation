@@ -29,34 +29,45 @@
 ################################################################################
 
 - sections:
-  - title: Overview
-    #link: docs/getting-started.md
-- sections:
-    - title: API Integration
-      #link: docs/datareqs.md
-- sections:
-    - title: Manage Keys
-      #link: docs/datareqs.md
-- sections:
-    - title: Data
-      #link: docs/datareqs.md
-- sections:
-    - title: Validation
-      #link: docs/datareqs.md
-- sections:
-    - title: Responses
-      #link: docs/datareqs.md
-- sections:
-    - title: Features
+    - title: Fraud Mitigation
       sections:
-        - title: Control
-          link: docs/control.md
-        - title: Scoring
-          link: docs/score.md
-        - title: Guarantee
-          link: docs/guarantee.md
-        - title: Enhanced Data
-          link: docs/enhanceddata.md
+        - title: Overview
+          link: docs/overview.md
+        - title: Understanding Fraud
+          link: docs/UnderstandingFraudTools.md
+        - title: Fraud Types
+          link: docs/fraudTypes.md
+        - title: Fraud Identification
+          link: docs/fraudIdentification.md
+- sections:
+    - title: Features and Connectivity
+      sections:
+        - title: Integration
+          link: docs/Integration.md
+        - title: Required vs Recommended
+          sections:
+            - title: Control
+              link: docs/dataControl.md
+            - title: Scoring
+              link: docs/dataScoring.md
+            - title: Guarantee
+              link: docs/dataGuarantee.md
+            - title: Enhanced Data
+              link: docs/enhanceddata.md
+            - title: Standalone
+              link: docs/dataStandalone.md
+- sections:
+    - title: Implementation
+      sections:
+        - title: API Integration
+          link: docs/Integration.md
+        - title: Manage Keys
+          link:
+        - title: Data Validation
+          link:
+        - title: Expected Responses
+          link:
+
 - sections:
   - title: Release notes
     sections:
