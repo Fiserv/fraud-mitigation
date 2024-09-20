@@ -26,6 +26,20 @@ Mid &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Seller Da
 
 Billing Address &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+---
+**Required** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Recommended**
+``` text
+ClientId                   Email
+ApiTraceId                 IP address
+Transaction Type           Customer Data
+Transaction Time           Bin
+Currency                   Device Data
+Total                      Shipping Address
+CardData                   User Account Update Dates
+Mid                        Seller Data
+Billing Address
+```
+
 
 
 
