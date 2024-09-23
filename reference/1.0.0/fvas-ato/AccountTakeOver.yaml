@@ -6,12 +6,12 @@ info:
     which eliminates the need for additional development time for merchants.
   version: v0
 servers:
-  - url: https://connect-qa.fiservapis.com/fvas-ato/v1/
-    description: QA external endpoint
-  - url: https://connect-uat.fiservapis.com/fvas-ato/v1/
-    description: CAT external endpoint
-  - url: https://connect-dev.fiservapis.com/fvas-ato/v1/
-    description: DEV external endpoint
+  - url: https://qa-ato.fraudvas-nonprod.aws.fisv.cloud/fraudVAS/ato
+    description: QA internal endpoint
+  - url: https://cat-ato.fraudvas-nonprod.aws.fisv.cloud/fraudVAS/ato
+    description: CAT internal endpoint
+  - url: https://dev-ato.fraudvas-nonprod.aws.fisv.cloud/fraudVAS/ato
+    description: DEV internal endpoint
 paths:
   /reclaim/{clientID}:
     post:
@@ -38,7 +38,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ReclaimResponse'
       x-proxy-name: Reclaim
-      x-group-name: AccountTakeOver
+      x-group-name: ATO
   /login/{clientID}:
     post:
       tags:
@@ -64,7 +64,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/FraudVASResponse'
       x-proxy-name: Login
-      x-group-name: AccountTakeOver
+      x-group-name: ATO
 components:
   schemas:
     ATOEvent:
@@ -74,14 +74,17 @@ components:
           type: string
           description: The unique ID of a login which indicated account takeover had
             taken place.
+          example: 90ok8af9-1ac2-7b2c-cd6a-a6a33c723511
         deviceId:
           type: string
           description: The unique ID of a device which indicated account takeover
             had taken place.
+          example: 41pd8af9-1ac2-7b2c-cd6a-a6a33c723511
         orderId:
           type: string
           description: The unique ID of an order which indicated account takeover
             had taken place.
+          example: 88rdd8af9-1ac2-7b2c-cd6a-a6a33c723511
       description: An array of objects containing IDs for the first account takeover
         events seen on a customer account. Each object in the array may only contain
         one ID.
@@ -94,6 +97,7 @@ components:
         method:
           type: string
           description: Indicates who reported that account takeover took place
+          example: PasswordReset
           enum:
             - PasswordReset
             - AccountDeleted
@@ -101,9 +105,11 @@ components:
         customerId:
           type: string
           description: The ID of the customer whose account was reclaimed
+          example: qwe-345-CVB
         reportedBy:
           type: string
           description: Indicates who reported that account takeover took place
+          example: CUSTOMER
           enum:
             - CUSTOMER
             - MERCHANT
@@ -130,6 +136,7 @@ components:
           type: integer
           description: Unix timestamp with milliseconds
           format: int64
+          example: 17228405120123
         customers:
           type: array
           description: An array of up to 100 customers whose accounts have been reclaimed
@@ -158,6 +165,7 @@ components:
         clientID:
           type: string
           description: A unique ID used to identify the Client.
+          example: abc
         apiTraceId:
           type: string
           description: A UUID request identifier in API that can be used to request
@@ -165,14 +173,18 @@ components:
           example: 1234567-a1234567-b12345-67c1234
         mid:
           type: string
+          description: A unique ID used to identify the Merchant
+          example: "10029345"
     ReclaimResponse:
       type: object
       properties:
         status:
           type: integer
           format: int32
+          example: 200
         message:
           type: string
+          example: 3 customer accounts reclaimed successfully
     App:
       type: object
       properties:
@@ -181,8 +193,11 @@ components:
           description: "The name or brand of the app, used to segment logins. Use\
             \ the name that customer sees when installing and using the app, or the\
             \ website title. Shouldn't repeat the platform or domain."
+          example: My App
         platform:
           type: string
+          description: Where this app runs.
+          example: ios
           enum:
             - ios
             - android
@@ -190,6 +205,9 @@ components:
             - mobile_web
         domain:
           type: string
+          description: "The domain from the URL of the web app, using the characters\
+            \ a-z0-9.. Pattern: ^[a-z0-9-\\.]+$"
+          example: eu.mydomain.com
       description: The mobile or web app that this login was done from.
     AuthenticationMechanism:
       type: object
@@ -222,8 +240,11 @@ components:
       properties:
         success:
           type: boolean
+          description: If the authentication was successful.
         failureReason:
           type: string
+          description: required if success is set to false
+          example: TIMEOUT
           enum:
             - BAD_PASSWORD
             - UNKNOWN_USERNAME
@@ -238,6 +259,7 @@ components:
             - INVALID_KEY
             - INVALID_LINK
             - FAILED_TEST
+      description: Provided if biometric authentication is used.
     Custom:
       type: object
       properties:
@@ -248,60 +270,93 @@ components:
       properties:
         deviceId:
           type: string
+          description: The ID of the device used by the customer to trigger this update.
+          example: 30rt5ac0-5wa3-4a3b-aa5e-f5a77b845260
         ipAddress:
           type: string
+          description: he IP address of the device connecting to your services.
+          example: 100.42.23.25
         userAgent:
           type: string
+          description: "The browser user-agent string, if the device represents a\
+            \ web browser"
+          example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36\
+            \ (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"
         model:
           type: string
+          description: The model/identifier name of the device if the device represents
+            a native app
+          example: Pixel 7
         os:
           type: string
+          description: The operating system of the device
+          example: android
         type:
           type: string
+          description: The type of device
+          example: mobile
           enum:
             - computer
             - phone
             - tablet
         manufacturer:
           type: string
+          description: The maker of the device
+          example: google
         location:
           $ref: '#/components/schemas/Location'
         custom:
           type: object
         language:
           type: string
-      description: "While Device is not a required field on the login event, it is\
-        \ highly recommended as it is a vital signal to account breaches. The most\
-        \ important Device fields are deviceId and ipAddress"
+          description: The ISO 639 code of your customer's device's preferred language
+          example: en-US
+      description: "While Device is not a required field, it is highly recommended\
+        \ as it is a vital signal to account breaches. The most important Device fields\
+        \ are deviceId and ipAddress"
     Location:
       type: object
       properties:
         country:
           type: string
+          description: 3 letter country code
+          example: USA
         postalCode:
           type: string
+          example: "90210"
         latitude:
           type: number
           format: double
+          example: 51.503252
         longitude:
           type: number
           format: double
+          example: -0.127899
         addresseeName:
           type: string
+          example: John Doe
         street1:
           type: string
+          example: 221 Baker Street
         street2:
           type: string
+          example: Apt 2
         neighbourhood:
           type: string
+          example: Hackney
         zone:
           type: string
+          example: "2"
         city:
           type: string
+          example: San Jose
         region:
           type: string
+          description: The state/county of the location.
+          example: California
         poBoxNumber:
           type: string
+          example: "1234"
         custom:
           $ref: '#/components/schemas/Custom'
       description: Location is optional. If you do have location as part of your flow
@@ -319,6 +374,7 @@ components:
           description: The username of the customer. This is the unique string that
             ties this particular customer to the authentication mechanism used. Typically
             this is the email address.
+          example: john.doe@test.com
         success:
           type: boolean
           description: If the login attempt was successful and access was granted.
@@ -333,6 +389,7 @@ components:
             login events as you will see failed logins against usernames that do not
             exist in your system and therefore do not have a customerId. Please send
             this on login attempts where a customerId is available.
+          example: qwe-345-CVB
     LoginRequest:
       required:
         - adapter
@@ -347,6 +404,7 @@ components:
           type: integer
           description: Unix timestamp with milliseconds
           format: int64
+          example: 1659710763230
         login:
           $ref: '#/components/schemas/Login'
         device:
@@ -356,6 +414,7 @@ components:
         adapter:
           type: string
           description: Fraud VAS Adapter
+          example: CommerceHub
           enum:
             - None
             - CommerceHub
@@ -376,6 +435,7 @@ components:
         clientID:
           type: string
           description: A unique ID used to identify the Client.
+          example: abc
         apiTraceId:
           type: string
           description: A UUID request identifier in API that can be used to request
@@ -383,17 +443,32 @@ components:
           example: 1234567-a1234567-b12345-67c1234
         mid:
           type: string
+          description: A unique ID used to identify the Merchant
+          example: "10029345"
     MagicLink:
       type: object
       properties:
         transport:
           type: string
+          description: "The transportation mechanism for the magic link. One of: email,\
+            \ or sms."
+          example: email
         phoneNumber:
           type: string
+          description: The number the link was sent to. Required if transport is sms.
+          example: "+17007003546"
+        email:
+          type: string
+          description: "The transportation mechanism for the magic link. One of: email,\
+            \ or sms."
+          example: abcd@test.com
         success:
           type: boolean
+          description: If the authentication was successful.
         failureReason:
           type: string
+          description: required if success is set to false
+          example: INVALID_LINK
           enum:
             - BAD_PASSWORD
             - UNKNOWN_USERNAME
@@ -408,13 +483,18 @@ components:
             - INVALID_KEY
             - INVALID_LINK
             - FAILED_TEST
+      description: Provided if a one time link was sent to the customer via a trusted
+        communication channel.
     OneTimeCode:
       type: object
       properties:
         success:
           type: boolean
+          description: If the authentication was successful.
         failureReason:
           type: string
+          description: required if success is set to false
+          example: INVALID_CODE
           enum:
             - BAD_PASSWORD
             - UNKNOWN_USERNAME
@@ -429,19 +509,32 @@ components:
             - INVALID_KEY
             - INVALID_LINK
             - FAILED_TEST
+      description: Provided if a one time code such as those used by Google Authenticator
+        is used.
     Password:
       type: object
       properties:
         passwordHashed:
           type: string
+          description: The SHA256 hash of the password.
+          example: 3037de29798f46fc407354758a0a562ce898666262dcc0ada088f25aeb4a4b82
         emailPasswordSHA256:
           type: string
+          description: "The SHA256 hash of the email and password concatenated. For\
+            \ example: SHA256(email + password) or SHA256(user@example.compassword123)"
+          example: 1e961194d3eefe21fcd0a03d7d0300850d52b36eca9a3eb7a6a19a51d7bd2a37
         passwordSHA1SHA256:
           type: string
+          description: "The SHA256 hash of the SHA1 hash of the password. For example:\
+            \ SHA256(SHA1(password))"
+          example: d67c30aaafc128ea08440081f3676e09a9da2e5d461148fa3afb81d756135e9b
         success:
           type: boolean
+          description: If the authentication was successful.
         failureReason:
           type: string
+          description: required if success is set to false
+          example: BAD_PASSWORD
           enum:
             - BAD_PASSWORD
             - UNKNOWN_USERNAME
@@ -456,13 +549,18 @@ components:
             - INVALID_KEY
             - INVALID_LINK
             - FAILED_TEST
+      description: Encouraged to also send hashed versions of the password to check
+        breached credentials database
     PushNotification:
       type: object
       properties:
         success:
           type: boolean
+          description: If the authentication was successful.
         failureReason:
           type: string
+          description: required if success is set to false
+          example: RATE_LIMIT
           enum:
             - BAD_PASSWORD
             - UNKNOWN_USERNAME
@@ -477,13 +575,18 @@ components:
             - INVALID_KEY
             - INVALID_LINK
             - FAILED_TEST
+      description: Provided if a push notification is sent within an app to authenticate
+        a customer.
     RSAKey:
       type: object
       properties:
         success:
           type: boolean
+          description: If the authentication was successful.
         failureReason:
           type: string
+          description: required if success is set to false
+          example: INVALID_KEY
           enum:
             - BAD_PASSWORD
             - UNKNOWN_USERNAME
@@ -498,13 +601,17 @@ components:
             - INVALID_KEY
             - INVALID_LINK
             - FAILED_TEST
+      description: "Provided if an RSA key is used, such as a Yubikey."
     Recaptcha:
       type: object
       properties:
         success:
           type: boolean
+          description: If the authentication was successful.
         failureReason:
           type: string
+          description: required if success is set to false
+          example: FAILED_TEST
           enum:
             - BAD_PASSWORD
             - UNKNOWN_USERNAME
@@ -519,15 +626,21 @@ components:
             - INVALID_KEY
             - INVALID_LINK
             - FAILED_TEST
+      description: Provided if reCAPTCHA was performed.
     SMSCode:
       type: object
       properties:
         phoneNumber:
           type: string
+          description: The number the SMS was sent to.
+          example: "+12023034004"
         success:
           type: boolean
+          description: If the authentication was successful.
         failureReason:
           type: string
+          description: required if success is set to false
+          example: CODE_TIMEOUT
           enum:
             - BAD_PASSWORD
             - UNKNOWN_USERNAME
@@ -542,13 +655,17 @@ components:
             - INVALID_KEY
             - INVALID_LINK
             - FAILED_TEST
+      description: Provided if a one time code was used sent via SMS.
     Social:
       type: object
       properties:
         success:
           type: boolean
+          description: If the authentication was successful.
         failureReason:
           type: string
+          description: required if success is set to false
+          example: SOCIAL_FAILURE
           enum:
             - BAD_PASSWORD
             - UNKNOWN_USERNAME
@@ -565,13 +682,21 @@ components:
             - FAILED_TEST
         socialProvider:
           type: string
+          description: "The social provider used for authentication. One of: apple,\
+            \ azure, facebook, google, linkedin, microsoft, okta, onelogin, ping,\
+            \ or twitter."
+          example: facebook
+      description: Provided if the customer authenticates via a social login provider.
     U2F:
       type: object
       properties:
         success:
           type: boolean
+          description: If the authentication was successful.
         failureReason:
           type: string
+          description: required if success is set to false
+          example: INVALID_KEY
           enum:
             - BAD_PASSWORD
             - UNKNOWN_USERNAME
@@ -586,6 +711,7 @@ components:
             - INVALID_KEY
             - INVALID_LINK
             - FAILED_TEST
+      description: Provided if Universal 2nd Factor (U2F) authentication is used
     ExternalResponse:
       type: object
       properties:
