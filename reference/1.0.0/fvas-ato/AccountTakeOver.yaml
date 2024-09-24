@@ -6,12 +6,12 @@ info:
     which eliminates the need for additional development time for merchants.
   version: v0
 servers:
-  - url: https://qa-ato.fraudvas-nonprod.aws.fisv.cloud/fraudVAS/ato
-    description: QA internal endpoint
-  - url: https://cat-ato.fraudvas-nonprod.aws.fisv.cloud/fraudVAS/ato
-    description: CAT internal endpoint
-  - url: https://dev-ato.fraudvas-nonprod.aws.fisv.cloud/fraudVAS/ato
-    description: DEV internal endpoint
+  - url: https://connect-qa.fiservapis.com/fvas-ato/v1
+    description: QA external endpoint
+  - url: https://connect-uat.fiservapis.com/fvas-ato/v1
+    description: CAT external endpoint
+  - url: https://connect-dev.fiservapis.com/fvas-ato/v1
+    description: DEV external endpoint
 paths:
   /reclaim/{clientID}:
     post:
@@ -31,6 +31,24 @@ paths:
               $ref: '#/components/schemas/ReclaimRequest'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  status: 500
+                  message: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  status: 400
+                  message: apiTraceId not provided
         "200":
           description: OK
           content:
@@ -57,12 +75,47 @@ paths:
               $ref: '#/components/schemas/LoginRequest'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  status: 500
+                  message: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                  status: 400
+                  message: apiTraceId not provided
         "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/FraudVASResponse'
+              example:
+                ruleID: account-takeover
+                ruleVersion: 1
+                approvalStatus: Approve
+                apiTraceId: abcdef-2345-tgbnhy
+                description: Account Takeover
+                scores:
+                  - null
+                  - null
+                  - null
+                  - null
+                  - score: 30
+                    timeTaken: 288
+                    status: Approve
+                  - null
+                tag: {}
+                processNonSecure: false
       x-proxy-name: Login
       x-group-name: ATO
 components:
