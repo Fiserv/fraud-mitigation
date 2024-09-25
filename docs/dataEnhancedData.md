@@ -5,7 +5,8 @@
 Improve approval rates by supplying additional data points that are widely recognized as key to fraud mitigation. Do so seamlessly to your customers as part of the current authorization flow.
 
 ---
-<!-- theme: success -->
+<div style="display: flex; justify-content: center;">
+
 |     Required      |        Recommended         |
 |:-----------------:|:--------------------------:|
 |     ClientId      |           Email            |
@@ -18,6 +19,7 @@ Improve approval rates by supplying additional data points that are widely recog
 |        Mid        |        Seller Data         |
 |  Billing Address  |                            |
 
+</div>
 
 
 
