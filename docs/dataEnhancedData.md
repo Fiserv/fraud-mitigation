@@ -6,6 +6,8 @@ Improve approval rates by supplying additional data points that are widely recog
 
 ---
 
+<centre>
+
 |     Required      |        Recommended         |
 |:-----------------:|:--------------------------:|
 |     ClientId      |           Email            |
@@ -17,6 +19,10 @@ Improve approval rates by supplying additional data points that are widely recog
 |     CardData      | User Account Update Dates  |
 |        Mid        |        Seller Data         |
 |  Billing Address  |                            |
+
+</centre>
+
+
 
 
 
