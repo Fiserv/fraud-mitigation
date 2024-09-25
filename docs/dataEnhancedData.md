@@ -1,13 +1,11 @@
-<h1 style="text-align: center;">Data – Enhanced Data</h1> 
+# Data – Enhanced Data
 
 ---
 
 Improve approval rates by supplying additional data points that are widely recognized as key to fraud mitigation. Do so seamlessly to your customers as part of the current authorization flow.
 
 ---
-<div style="margin-left: auto;
-            margin-right: auto;
-            width: 30%">
+
 
 |     Required      |        Recommended         |
 |:-----------------:|:--------------------------:|
@@ -21,7 +19,6 @@ Improve approval rates by supplying additional data points that are widely recog
 |        Mid        |        Seller Data         |
 |  Billing Address  |                            |
 
-</div>
 
 
 
