@@ -6,6 +6,8 @@ Integrate with the scoring solution and leverage machine learning based models f
 
 ---
 
+<div style="text-align: center">
+
 |      Required      |   Recommended    |
 |:------------------:|:----------------:|
 |      ClientId      | Billing Address  |
@@ -21,7 +23,7 @@ Integrate with the scoring solution and leverage machine learning based models f
 |      EcomURL       |                  |
 |   ShippingItem     |                  |
 
-
+</div>
 
 
 
