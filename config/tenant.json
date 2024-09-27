@@ -17,7 +17,7 @@
   "product": {
     "featured": true,
     "logoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Portal_Logo.png",
-    "description": "Fraud Mitigation equips merchants with the necessary tools to make authorization decisions based on transaction attributes and user behavior evaluated in real time",
+    "description": "Fraud Mitigation supports merchants make real-time decisions using transaction attributes and user behavior",
     "longDescription":"Fraud Mitigation provides merchants the ability to decision authorization based on a number of in flight component attributes. The underlying infrastructure provides the gateway an environment that ultimately protects the firms asset by recognizing fraud patterns and stopping transactions that may fit this mold. The integration provides quick and easy access to a combination of proprietary and partner capabilities.",
     "apiSpecification": "/v1/apis/FraudMitigation",
     "layout": "/v1/layouts/FraudMitigation",
