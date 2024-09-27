@@ -6,7 +6,6 @@ Integrate with the scoring solution and leverage machine learning based models f
 
 ---
 
-<div style="text-align: center">
 
 |      Required      |   Recommended    |
 |:------------------:|:----------------:|
@@ -23,7 +22,6 @@ Integrate with the scoring solution and leverage machine learning based models f
 |      EcomURL       |                  |
 |   ShippingItem     |                  |
 
-</div>
 
 
 
