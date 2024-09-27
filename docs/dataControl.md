@@ -47,10 +47,19 @@
                 margin-left: auto;
                 margin-right: auto;
                 border-collapse: collapse;
-                width: 50%
+                width: 50%;
+                align: center;
         }
 
-        div, th, td {
+        th, td {
                 text-align: center;
                 border: 1px solid break;
+        }
+
+        .highlight {
+                background-color: yellow;
+        }
+        .light {
+                background-color: #f2f2f2;
+        }
 </style>
