@@ -43,12 +43,11 @@
 </table>
 
 <style>
-        table {
+        .markdown-body table {
                 margin-left: auto;
                 margin-right: auto;
                 border-collapse: collapse;
                 width: 50%;
-                align: center;
         }
 
         th, td {
