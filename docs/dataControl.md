@@ -63,9 +63,8 @@
         td:empty {
                 display: none;
         }
-
-        .markdown-body table tr highlight {
-                background-color: #f28500;
+`       .markdown-body table tr:nth-child(2n) {
+            background-color: #f28500; 
         }
         .light {
                 background-color: #ffdab9;
