@@ -64,7 +64,7 @@
                 display: none;
         }
 
-        .highlight {
+        .markdown-body table tr highlight {
                 background-color: #f28500;
         }
         .light {
