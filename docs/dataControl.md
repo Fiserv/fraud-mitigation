@@ -12,32 +12,32 @@
         <th>Required</th>
         <th>Recommended</th>
     </tr>
-    <tr>
+    <tr class="highlight">
         <td>ClientId</td>
         <td>IP address</td>
     </tr>
-    <tr>
+    <tr class="light">
         <td>ApiTraceId</td>
         <td>Billing Address</td>
     </tr>
-    <tr>
+    <tr class="highlight">
         <td>Transaction Type</td>
         <td>Customer Data</td>
     </tr>
-    <tr>
+    <tr class="light">
         <td>Transaction Time</td>
         <td>Device Data</td>
     </tr>
-    <tr>
+    <tr class="highlight">
         <td>Currency</td>
     </tr>
-    <tr>
+    <tr class="light">
         <td>Total</td>
     </tr>
-    <tr>
+    <tr class="highlight">
         <td>CardData</td>
     </tr>
-    <tr>
+    <tr class="light">
         <td>Mid</td>
     </tr>
 </table>
@@ -50,15 +50,24 @@
                 width: 50%;
         }
 
+.markdown-body div {
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+        }
+
         th, td {
                 text-align: center;
                 border: 1px solid break;
         }
+        td:empty {
+                display: none;
+        }
 
         .highlight {
-                background-color: yellow;
+                background-color: #f28500;
         }
         .light {
-                background-color: #f2f2f2;
+                background-color: #ffdab9;
         }
 </style>
