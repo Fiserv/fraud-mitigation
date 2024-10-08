@@ -1,9 +1,7 @@
 openapi: 3.0.1
 info:
   title: Fraud Mitigation
-  description: Fraud Mitigation Score provides real time fraud protection through
-    a customized scoring engine. Decisions are rendered within the authorization flow
-    which eliminates the need for additional development time for merchants.
+  description: Fraud Mitigation Score provides real time fraud protection through a customized scoring engine. Decisions are rendered within the authorization flow which eliminates the need for additional development time for merchants.
   version: v0
 servers:
   - url: https://connect-qa.fiservapis.com/fvas-mitigation-v1/
@@ -20,9 +18,8 @@ paths:
     post:
       tags:
         - Fraud Mitigation Exec services
-      description: Applies various pre-payment fraud and velocity controls based on
-        the request
       operationId: preEvaluate
+      description: Applies various pre-payment fraud and velocity controls based on the request
       parameters:
         - name: gatewayName
           in: path
@@ -46,7 +43,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FraudVASResponse'
+                type: string
         '400':
           description: Bad request. Validation exception.
           content:
@@ -59,15 +56,12 @@ paths:
             application/json:
               schema:
                 type: string
-      x-proxy-name: preEvaluate
-      x-group-name: Gateway
   /{gatewayName}/post-evaluate/clientID/{clientID}:
     post:
       tags:
         - Fraud Mitigation Exec services
-      description: Applies various post-payment fraud and velocity controls based
-        on the request
       operationId: postEvaluate
+      description: Applies various post-payment fraud and velocity controls based on the request
       parameters:
         - name: gatewayName
           in: path
@@ -91,7 +85,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FraudVASResponse'
+                type: string
         '400':
           description: Bad request. Validation exception.
           content:
@@ -104,10 +98,828 @@ paths:
             application/json:
               schema:
                 type: string
-      x-proxy-name: postEvaluate
-      x-group-name: Gateway
 components:
   schemas:
+    AbsoluteDiscountCode:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/DiscountCode'
+        - type: object
+          properties:
+            amount:
+              type: number
+              format: double
+    Additional3DS:
+      type: object
+      properties:
+        dfReferenceId:
+          type: string
+          description: Reference Id that relates to the device data that was previously collected. DFreferenceId is generated as part of the Device Data Collection call.
+          example: qwpamdgertsf
+        apiVersion:
+          type: string
+          description: Application message identifier. Cardinal specific.
+          example: '1.7'
+        transactionMode:
+          type: string
+          description: Transaction mode identifier. Identifies the channel the transaction originates from.
+          example: MOTO
+          enum:
+            - MOTO
+            - Mobile
+            - Retail
+            - Computer
+            - Tablet
+        transactionCountDay:
+          type: integer
+          description: Number of transactions (successful or abandoned) for this cardholder account within the last 24 hours.
+          format: int32
+          example: 10
+        transactionCountSixMonths:
+          type: integer
+          description: Number of purchases with this cardholder account during the previous six months.
+          format: int32
+          example: 10
+        transactionCountYear:
+          type: integer
+          description: Number of purchases with this cardholder account during the previous year.
+          format: int32
+          example: 10
+        merchantReferenceNumber:
+          type: string
+          description: Merchant specified data.
+          example: '53127823'
+        cardType:
+          type: string
+          description: International network.
+          example: MAE
+          enum:
+            - UNKNOWN
+            - VISA
+            - MASTERCARD
+            - AMEX
+            - DISCOVER
+            - CUP
+            - DINERS
+            - JCB
+            - PRIVATE
+            - CARTEBLANCHE
+            - ENROUTE
+            - JAL
+            - CARTEBLEUE
+            - DANKORT
+            - CARTASI
+            - ENCODEDACCT
+            - UATP
+            - MAESTROINTL
+            - CARTES
+            - ELO
+            - INTERBANK
+            - EFTPOS
+            - VISADELTA
+            - VISAELECTRON
+            - MAESTROUK
+        recurringIndicator:
+          type: string
+          description: Indicates the type of Authentication request.
+          example: OneTime
+          enum:
+            - OneTime
+            - Recurring
+            - Installment
+            - CardOnFile
+            - Deferred
+        reorderIndicator:
+          type: string
+          description: Indicates whether the cardholder is reordering previously purchased merchandise.
+          example: FirstTime
+          enum:
+            - FirstTime
+            - Reorder
+        preorderIndicator:
+          type: string
+          description: Indicates whether cardholder is placing an order with a future availability or release date.
+          example: Future
+          enum:
+            - Available
+            - Future
+        preorderDate:
+          type: string
+          description: Expected date that a pre-ordered purchase will be available. YYYYMMDD
+          example: '20220901'
+        authenticationIndicatorInitiator:
+          type: string
+          enum:
+            - MERCHANT
+            - CARD_HOLDER
+        authenticationIndicatorSequence:
+          type: string
+          enum:
+            - FIRST
+            - SUBSEQUENT
+            - SINGLE
+        authenticationIndicatorBillPaymentType:
+          type: string
+          enum:
+            - SINGLE
+            - RECURRING
+            - INSTALLMENT
+            - DEFERRED
+        giftCardAmount:
+          type: number
+          description: The purchase amount total for prepaid gift cards in major units.
+          format: double
+          example: 0
+        giftCardCurrency:
+          type: string
+          description: ISO 4217 currency code for the gift card purchased.
+          example: USD
+          enum:
+            - Unknown
+            - USD
+            - AFN
+            - DZD
+            - ARS
+            - AMD
+            - AWG
+            - AUD
+            - AZN
+            - BSD
+            - BHD
+            - THB
+            - PAB
+            - BBD
+            - BYR
+            - BZD
+            - BMD
+            - VEF
+            - BOB
+            - BRL
+            - BND
+            - BGN
+            - BIF
+            - CAD
+            - CVE
+            - KYD
+            - XOF
+            - XAF
+            - XPF
+            - CLP
+            - COP
+            - KMF
+            - BAM
+            - NIO
+            - CRC
+            - HRK
+            - CUP
+            - CZK
+            - GMD
+            - DKK
+            - MKD
+            - DJF
+            - STD
+            - DOP
+            - VND
+            - XCD
+            - EGP
+            - SVC
+            - ETB
+            - EUR
+            - FKP
+            - FJD
+            - HUF
+            - CDF
+            - GHS
+            - GIP
+            - HTG
+            - PYG
+            - GNF
+            - GWP
+            - GYD
+            - HKD
+            - UAH
+            - ISK
+            - INR
+            - IRR
+            - IQD
+            - JMD
+            - JOD
+            - KES
+            - PGK
+            - LAK
+            - KWD
+            - MWK
+            - ZMK
+            - AOA
+            - MMK
+            - GEL
+            - LVL
+            - LBP
+            - ALL
+            - HNL
+            - SLL
+            - LRD
+            - LYD
+            - SZL
+            - LTL
+            - LSL
+            - MGA
+            - MYR
+            - MUR
+            - MZN
+            - MXN
+            - MXV
+            - MDL
+            - MAD
+            - BOV
+            - NGN
+            - ERN
+            - NAD
+            - NPR
+            - ANG
+            - ILS
+            - RON
+            - TWD
+            - TRY
+            - NZD
+            - BTN
+            - KPW
+            - NOK
+            - PEN
+            - MRO
+            - TOP
+            - PKR
+            - MOP
+            - UYU
+            - PHP
+            - GBP
+            - BWP
+            - QAR
+            - GTQ
+            - ZAR
+            - OMR
+            - KHR
+            - MVR
+            - IDR
+            - RUB
+            - RWF
+            - SHP
+            - SAR
+            - XDR
+            - RSD
+            - SCR
+            - SGD
+            - SBD
+            - KGS
+            - SOS
+            - TJS
+            - LKR
+            - SDG
+            - SRD
+            - SEK
+            - CHF
+            - SYP
+            - BDT
+            - WST
+            - TZS
+            - KZT
+            - TTD
+            - MNT
+            - TND
+            - AED
+            - UGX
+            - COU
+            - CLF
+            - UYI
+            - USN
+            - USS
+            - UZS
+            - VUV
+            - CHE
+            - CHW
+            - KRW
+            - YER
+            - JPY
+            - CNY
+            - PLN
+            - XBA
+            - XTS
+            - XBB
+            - XBD
+            - XBC
+            - XAU
+            - XPD
+            - XPT
+            - XAG
+            - XXX
+            - XFU
+            - TMT
+            - ZWL
+            - CUC
+            - SSP
+            - XUA
+            - XSU
+            - BYN
+            - VES
+            - ZMW
+            - MRU
+            - STN
+            - SLE
+            - VED
+            - UYW
+        giftCardCount:
+          type: integer
+          description: Total count of individual prepaid gift cards purchased. The value passed in should be exactly 2-digit numeric.
+          format: int32
+          example: 10
+        accountAgeIndicator:
+          type: string
+          description: Length of time cardholder has had account.
+          example: LessThanThirtyDays
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        accountChangeIndicator:
+          type: string
+          description: Length of time since the last change to the cardholder account. This includes shipping address, new payment account or new user added.
+          example: LessThanThirtyDays
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        accountChangeDate:
+          type: integer
+          description: Date the cardholder's account was last changed.
+          format: int64
+          example: 20220901
+        accountPasswordChangeIndicator:
+          type: string
+          description: Length of time since the cardholder changed or reset the password on the account.
+          example: LessThanThirtyDays
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        accountPasswordChangeDate:
+          type: integer
+          description: Date the cardholder last changed or reset password on account.
+          format: int64
+          example: 20220901
+        addCardAttempts:
+          type: integer
+          description: Number of add card attempts in the last 24 hours.
+          format: int32
+          example: 10
+        merchantObservedFraud:
+          type: boolean
+          description: Indicates whether the merchant experienced suspicious activity (including previous fraud) on the account.
+          example: false
+        paymentAccountIndicator:
+          type: string
+          description: Indicates the length of time that the payment account was enrolled in the merchant account.
+          example: MoreThanSixtyDays
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        paymentAccountChangeDate:
+          type: integer
+          description: Date the payment account was added to the cardholder account.
+          format: int64
+          example: 20220901
+        shippingAddressUsageIndicator:
+          type: string
+          description: Indicates when the shipping address used for transaction was first used.
+          example: MoreThanSixtyDays
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        shippingMethodIndicator:
+          type: string
+          description: Indicates shipping method chosen for the transaction.
+          example: '01'
+          enum:
+            - SHIP_TO_CARDHOLDER
+            - SHIP_TO_VERIFIED_ADDRESS
+            - SHIP_TO_NON_BILLING_ADDRESS
+            - SHIP_TO_STORE
+            - ELECTRONIC
+            - NOT_SHIPPED
+            - OTHER
+        shippingTimeframe:
+          type: string
+          description: Shipping Timeframe
+          example: OVERNIGHT
+          enum:
+            - ELECTRONIC
+            - SAME_DAY
+            - OVERNIGHT
+            - PRIORITY
+            - GROUND
+            - TO_STORE
+        threeDSAttempted:
+          type: boolean
+          description: Whether the user was directed to 3DS
+          example: true
+        challengeRequired:
+          type: boolean
+          description: Indicates whether a challenge is required to complete authentication. For example, regional mandates.
+          example: false
+        threeDSSuccess:
+          type: boolean
+          description: Whether the user was successfully authenticated by 3DS
+          example: true
+        threeDSStartTime:
+          type: integer
+          description: The time at which the user was directed to 3DS (unix timestamp).
+          format: int64
+          example: 101010101010101
+        threeDSEndTime:
+          type: integer
+          description: The time at which the user returned from 3DS (unix timestamp).
+          format: int64
+          example: 101010101010101
+        threeDSTimedOut:
+          type: boolean
+          description: Whether the user is believed to have abandoned 3DS.
+          example: false
+        threeDSVersion:
+          type: string
+          description: This field contains the 3DS version that was used to process the transaction.
+          example: 2.2.0
+          enum:
+            - One_Zero_Two
+            - Two_One_Zero
+            - Two_Two_Zero
+        threeDSLiabilityShifted:
+          type: boolean
+          description: Whether the liability of the transaction resulting in a chargeback has moved from the merchant to the card issuer.
+          example: true
+        eciFlagNormalized:
+          type: string
+          description: Electronic Commerce Indicator (ECI) normalized. The ECI value is part of the 2 data elements that indicate the transaction was processed electronically.
+          example: '05'
+          enum:
+            - MCAuthenticated
+            - MCAttempted
+            - MCNon3DSecure
+            - Authenticated
+            - Attempted
+            - Non3DSecure
+            - MCAuthenticatedDataOnly
+        paResStatus:
+          type: string
+          description: Transactions status result identifier.
+          example: 'Y'
+          enum:
+            - 'Y'
+            - 'N'
+            - U
+            - A
+            - C
+            - R
+            - D
+            - I
+        threeDSTransStatusReason:
+          type: string
+          description: Provides information on why the transStatus field has the specified value.
+          example: success
+        threeDSMessageType:
+          type: string
+          description: Identifies the type of message from which the transStatus value was received.
+          example: finalMessage
+        threeDSIReqCode:
+          type: string
+          description: If the transStatus value is U the accompanying invalid request code should be provided to further explain the reason authentication could not be performed.
+          example: valid
+        acquirerId:
+          type: string
+          description: The acquirer is a financial institution with whom the merchant has a bank account.
+          example: chase
+        acquirerBin:
+          type: string
+          description: The bank identification number of the acquirer.
+          example: '101010'
+        acquirerCountry:
+          type: string
+          description: The three letter country code of the country in which your acquirer will settle the payment.
+          example: USD
+        acquirerCountryCleansed:
+          type: string
+          description: Normalized country code of the country in which your acquirer will settle the payment.
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        productCode:
+          type: string
+          description: Merchant product code. Merchant product code.
+          example: PHY
+          enum:
+            - PHY
+            - CHA
+            - ACF
+            - PAL
+      description: Additional 3DS information.
+    Address:
+      type: object
+      properties:
+        streetAddress:
+          type: string
+          description: Needed for Chargeback Guarantee, merchant specific.
+        unit:
+          type: string
+        postalCode:
+          type: string
+          description: Needed for Chargeback Guarantee, merchant specific.
+        city:
+          type: string
+          description: Needed for Chargeback Guarantee, merchant specific.
+        provinceCode:
+          type: string
+          description: Needed for Chargeback Guarantee, merchant specific.
+        countryCode:
+          type: string
+          description: Needed for Chargeback Guarantee, merchant specific.
+      description: User Account registered address
+      example: ABC Drive
+    DiscountCode:
+      required:
+        - '@type'
+      type: object
+      properties:
+        code:
+          type: string
+        '@type':
+          type: string
+      description: List of discount codes and their associated amount or percentage. Each DiscountCode object can be of type 'absolute' for an amount discount or 'percent' for a percent discount
+      discriminator:
+        propertyName: '@type'
     FraudVASRequest:
       required:
         - adapter
@@ -134,14 +946,11 @@ components:
           example: XYZ
         apiTraceId:
           type: string
-          description: Request identifier in API that can be used to request logs
-            from the support team.
+          description: Request identifier in API that can be used to request logs from the support team.
           example: 1234567a1234567b1234567c1234567d
         clientRequestId:
           type: string
-          description: "A client-generated ID for request tracking and signature creation,\
-            \ unique per request. This is also used for idempotency control. Recommended\
-            \ 128-bit UUID format."
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
           example: 5fcd13e2ec114c58b5216c542a4ce4d7
         transactionType:
           type: string
@@ -162,11 +971,15 @@ components:
             - Cancel-Pre-Auth
             - Cancel-Sale
             - Cancel-Capture
+            - Client-Registration
+            - Card-Registration
+            - Lookup
+            - Authenticate
+            - Initialize
         primaryTransactionId:
           type: string
-          description: The unique identifier from the original transaction passed
-            for a reauthorization and incremental authorization.
-          example: "838916029301"
+          description: The unique identifier from the original transaction passed for a reauthorization and incremental authorization.
+          example: '838916029301'
         total:
           type: number
           description: Total amount.
@@ -377,10 +1190,13 @@ components:
           type: string
           description: AVS response code.
           example: X
+        nameResultCode:
+          type: string
+          description: Card holder response code.
+          example: X
         authCode:
           type: string
-          description: "Authorization code from association(s). Generally, 6/7 alphanumeric\
-            \ code that gets printed on the receipt."
+          description: Authorization code from association(s). Generally, 6/7 alphanumeric code that gets printed on the receipt.
           example: 99AA99
         declineNotification:
           type: boolean
@@ -400,18 +1216,16 @@ components:
             - Open
         timestamp:
           type: integer
-          description: Epoch timestamp in milliseconds in the request from a client
-            system. Used for authorization header generation and time limit.
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit.
           format: int64
           example: 1659710763230
         terminalID:
           type: string
           description: The terminal identifier for the transaction.
-          example: "99"
+          example: '99'
         switchDeliverySource:
           type: string
-          description: Delivery source set on the authorization from the front end
-            that denotes a specific group of mid.
+          description: Delivery source set on the authorization from the front end that denotes a specific group of mid.
           example: LLNE
         txnOriginator:
           type: string
@@ -484,24 +1298,20 @@ components:
           example: 1000
         cardData:
           type: string
-          description: "Card Number encrypted via AES. Required if encryptedCardData,\
-            \ acnuFirstSix, and acnuLastFour not provided."
+          description: Card Number encrypted via AES. Required if encryptedCardData, acnuFirstSix, and acnuLastFour not provided.
           example: jRJqrtmxGbCheVhpyJxTXTAVSNFFk2nHwZBsVgBLQA==
         encryptedCardData:
           type: string
-          description: "Encrypted Credit Card Number via voltage. Required if cardData,\
-            \ acnuFirstSix, and acnuLastFour not provided."
+          description: Encrypted Credit Card Number via voltage. Required if cardData, acnuFirstSix, and acnuLastFour not provided.
           example: 371449ODBSR8431
         acnuFirstSix:
           type: string
-          description: First six digits of card number. Required if encryptedCardData
-            and cardData not provided."
-          example: "123456"
+          description: First six digits of card number. Required if encryptedCardData and cardData not provided."
+          example: '123456'
         acnuLastFour:
           type: string
-          description: Last four digits of card number. Required if encryptedCardData
-            and cardData not provided.
-          example: "9876"
+          description: Last four digits of card number. Required if encryptedCardData and cardData not provided.
+          example: '9876'
         paymentType:
           type: string
           description: Denotes the type of payment used for the transaction.
@@ -518,6 +1328,15 @@ components:
             - WalmartPay
             - AmazonPay
             - VisaCheckout
+        tokenSource:
+          type: string
+          description: Token Source
+          example: DPAN
+          enum:
+            - DPAN
+            - FPAN
+            - TRANSARMOR
+            - NetworkToken
         customerReference:
           type: string
           description: Customer identification value.
@@ -537,26 +1356,28 @@ components:
         merchantAssignedId:
           type: string
           description: Merchant id assigned to the merchant by the scoring provider
-          example: "123456789"
+          example: '123456789'
         sessionId:
           type: string
-          description: Unique Session ID for the client. Provides a lookup for browser
-            or mobile device detail information.
+          description: Unique Session ID for the client. Provides a lookup for browser or mobile device detail information.
           example: 06162f0c-297d-417e-a473-0d9cb64023f1
         customerName:
           type: string
           description: Customer name
           example: John
+        customerLastName:
+          type: string
+          description: Customer Last name
+          example: Doe
         customerCreationTime:
           type: integer
-          description: Epoch timestamp associated with the creation of the user id
-            in the merchant system.
+          description: Epoch timestamp associated with the creation of the user id in the merchant system.
           format: int64
           example: 1234567890
         customerDOB:
           type: string
           description: Customer date of birth as YYYYMMDD.
-          example: "20000101"
+          example: '20000101'
         customerExtId:
           type: string
           description: Merchant assigned account number for customer.
@@ -564,15 +1385,19 @@ components:
         customerPhoneNumber:
           type: string
           description: Customer phone number
-          example: "5555555555"
+          example: '5555555555'
         customerWorkPhoneNumber:
           type: string
           description: Customer work phone number
-          example: "5555555555"
+          example: '5555555555'
+        customerHomePhoneNumber:
+          type: string
+          description: Customer home phone number
+          example: '5355555555'
         customerHouseNumberOrName:
           type: string
           description: Customer House number
-          example: "2222"
+          example: '2222'
         customerStreet:
           type: string
           description: Customer Street Address
@@ -587,13 +1412,12 @@ components:
           example: Atlanta
         customerCountry:
           type: string
-          description: "Customer ISO-3166-1 alpha-2, alpha-3, numeric or full country\
-            \ name."
+          description: Customer ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
           example: US
         customerPostalCode:
           type: string
           description: postalcode of customer
-          example: "30005"
+          example: '30005'
         customerStateOrProvince:
           type: string
           description: State or Province of customer
@@ -602,32 +1426,193 @@ components:
           type: string
           description: Merchant customer type
           example: Ford Streaming
+        customerANI:
+          type: string
+          description: The Automatic Number Identification (ANI) specified 10-digit phone number that the Customer used to place the order.
+          example: '2012345678'
+        customerII:
+          type: string
+          description: 'The telephone company-provided ANI Information Identifier (II) digits associated with the Customer''s ANI; Value ranges include: Cellular = 61-63, Payphone = 27, Toll-free = 24, 25'
+          example: '27'
+        userAcctNumber:
+          type: string
+          description: Your unique identifier for the account
+          example: q49shfe3
+        userAcctAggregateOrderCount:
+          type: integer
+          description: The total count of orders placed by this account since it was created, including the current order.
+          format: int64
+          example: 7
+        userAcctAggregateOrderDollars:
+          type: number
+          description: The total amount spent by this account since it was created, including the current order
+          format: double
+          example: 4235.78
+        userAcctCreatedTimestamp:
+          type: integer
+          description: the Timestamp that the customer opened his or her account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctCreatedDuringThisTransaction:
+          type: boolean
+          description: Set this to true if customer opened his or her account with the merchant during this transaction
+          example: true
+        userAcctUserName:
+          type: string
+          description: User Account user's name
+          example: Jane Smith
+        userAcctEmail:
+          type: string
+          description: User Account registered email
+          example: abc@test.com
+        userAcctPostalCode:
+          type: string
+          description: User Account registered postal code
+          example: '07100'
+        userAcctAddresses:
+          type: array
+          description: User Account registered address
+          example: ABC Drive
+          items:
+            $ref: '#/components/schemas/Address'
+        userAcctPhone:
+          type: string
+          description: User Account registered phone
+          example: '2012345678'
+        userAcctLastOrderId:
+          type: string
+          description: User Account's last order id
+          example: 1234ABC
+        userAcctLastUpdateTimestamp:
+          type: integer
+          description: the Timestamp that the customer most recently modified the information in their account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctLastUpdateDuringThisTransaction:
+          type: boolean
+          description: Set this to true if customer modified details on his or her account with the merchant during this transaction
+          example: true
+        userAcctNameLastUpdateTimestamp:
+          type: integer
+          description: the Timestamp that the customer last modified the registered name in their account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctEmailLastUpdateTimestamp:
+          type: integer
+          description: the Timestamp that the customer last modified the registered email in their account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctPasswordLastUpdateTimestamp:
+          type: integer
+          description: the Timestamp that the customer last modified the registered password in their account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctPasswordLastUpdateDuringThisTransaction:
+          type: boolean
+          description: Set this to true if customer modified the password of his or her account with the merchant during this transaction
+          example: true
+        userAcctPostalCodeLastUpdateTimestamp:
+          type: integer
+          description: the Timestamp that the customer last modified the registered postal code in their account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctAddressLastUpdateTimestamp:
+          type: integer
+          description: the Timestamp that the customer last modified the registered address in their account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctPhoneLastUpdateTimestamp:
+          type: integer
+          description: the Timestamp that the customer last modified the registered phone in their account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctShipAddressLastUpdateTimestamp:
+          type: integer
+          description: the Timestamp that the customer last modified the shipping address in their account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctShipNameLastUpdateTimestamp:
+          type: integer
+          description: the Timestamp that the customer last modified the registered shipping name in their account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctSavedPayments:
+          type: array
+          description: An array of payment methods added to the account.
+          items:
+            $ref: '#/components/schemas/SavedPayment'
+        userAcctSavedAddresses:
+          type: array
+          description: An array of addresses added to the account.
+          items:
+            $ref: '#/components/schemas/SavedAddress'
+        userAcctTransactionCountSixMonths:
+          type: integer
+          description: The number of purchases the customer has made through this account in the past six months
+          format: int32
+          example: 12
+        userAcctTransactionCountDay:
+          type: integer
+          description: The number of purchases the customer has made through this account over the past 24 hours
+          format: int32
+          example: 12
+        userAcctTransactionCountYear:
+          type: integer
+          description: The number of purchases the customer has made through this account over the past year
+          format: int32
+          example: 12
+        userAcctPaymentChangeTimestamp:
+          type: integer
+          description: The Timestamp that the customer most recently added a payment card to their account with the merchant, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        userAcctPaymentIndicator:
+          type: string
+          description: Represents the age of the addition of the payment card to their account with the merchant
+          example: DuringTransaction
+          enum:
+            - None
+            - DuringTransaction
+            - LessThanThirtyDays
+            - ThirtyToSixtyDays
+            - MoreThanSixtyDays
+        userAcctAddCardAttempts:
+          type: integer
+          description: The number of attempts to add a payment card to this account over the past 24 hours
+          format: int32
+          example: 1
+        userAcctMerchantObservedFraud:
+          type: boolean
+          description: Set this to true if you have detected suspicious activity on the customer's merchant account in the past
+          example: true
+        userAcctPaid:
+          type: boolean
+          description: Set this to true if user account is a paid account
+          example: true
         mid:
           type: string
           description: A unique ID used to identify the Merchant.
-          example: "11111111"
+          example: '11111111'
         ecomURL:
           type: string
-          description: This field contains the URL of the site performing the Ecommerce
-            transaction.
+          description: This field contains the URL of the site performing the Ecommerce transaction.
           example: https://www.somedomain.com
         sourceMid:
           type: string
           description: External mid.
-          example: "22222"
+          example: '22222'
         merchantCountry:
           type: string
-          description: "Merchant ISO-3166-1 alpha-2, alpha-3, numeric or full country\
-            \ name."
+          description: Merchant ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
           example: US
         merchantPostalCode:
           type: string
           description: PostalCode of Merchant
-          example: "30040"
+          example: '30040'
         merchantHouseNumberOrName:
           type: string
           description: HouseNumber or Name of Merchant
-          example: "4105"
+          example: '4105'
         merchantStreet:
           type: string
           description: Street of Merchant
@@ -642,11 +1627,54 @@ components:
           example: NY
         mcc:
           type: integer
-          description: Merchant Category Code (MCC). The MCC is an industry standard
-            four-digit number used to classify a business by the type of goods or
-            services provided.
+          description: Merchant Category Code (MCC). The MCC is an industry standard four-digit number used to classify a business by the type of goods or services provided.
           format: int32
           example: 7311
+        merchantOutletCount:
+          type: integer
+          description: Merchant Outlet Count. The number of outlets for a given merchant.
+          format: int32
+          example: 15
+        merchantTenure:
+          type: integer
+          description: Merchant Tenure. in years
+          format: int32
+          example: 2
+        merchantPercentageKeyedDaily:
+          type: number
+          description: 'Merchant Daily Keyed Transaction % '
+          format: double
+          example: 27.5
+        merchantAverageTicketSigned:
+          type: number
+          description: Merchant Signed Average Ticket
+          format: double
+          example: 27.5
+        merchantAverageTicketDaily:
+          type: number
+          description: Merchant Daily Average Ticket
+          format: double
+          example: 7.5
+        merchantAverageTicket90DayRolling:
+          type: number
+          description: Merchant 90 day rolling Average Ticket
+          format: double
+          example: 17.5
+        merchantVolumeSigned:
+          type: number
+          description: Merchant Signed Volume
+          format: double
+          example: 1600.5
+        merchantVolumeMonthToDate:
+          type: number
+          description: Merchant Month to Date Volume / MTD Volume
+          format: double
+          example: 1700.5
+        merchantVolume30DayRolling:
+          type: number
+          description: Merchant 30 day rolling Volume
+          format: double
+          example: 1700.5
         ipAddress:
           type: string
           description: The TXN_IP address of the customer.
@@ -657,14 +1685,12 @@ components:
           example: 123 Main Street
         billingHouseNumberOrName:
           type: string
-          description: "Billing Secondary address information, e.g. house number or\
-            \ name."
+          description: Billing Secondary address information, e.g. house number or name.
           example: Apt 213
         billingRecipientNameOrAddress:
           type: string
-          description: "Billing Tertiary address information e.g. recipient name,\
-            \ company name or address."
-          example: "ATTN: Accounting Dept"
+          description: Billing Tertiary address information e.g. recipient name, company name or address.
+          example: 'ATTN: Accounting Dept'
         billingCity:
           type: string
           description: Billing City or locality.
@@ -679,19 +1705,16 @@ components:
           example: 30303-0001
         billingCountry:
           type: string
-          description: "Billing ISO-3166-1 alpha-2, alpha-3, numeric or full country\
-            \ name."
+          description: Billing ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
           example: US
         billingCounty:
           type: string
-          description: "Billing The 5-digit number or full county name identifying\
-            \ the U.S. county as defined by FIPS, indicating where the transaction\
-            \ occurred."
-          example: "13121"
+          description: Billing The 5-digit number or full county name identifying the U.S. county as defined by FIPS, indicating where the transaction occurred.
+          example: '13121'
         billingPhoneNumber:
           type: string
           description: Billing phone number
-          example: "5555555555"
+          example: '5555555555'
         billingFirstName:
           type: string
           description: First name of the recipient
@@ -714,14 +1737,12 @@ components:
           example: Collingwood Lane
         shippingHouseNumberOrName:
           type: string
-          description: "Shipping Secondary address information, e.g. house number\
-            \ or name."
+          description: Shipping Secondary address information, e.g. house number or name.
           example: Apt 213
         shippingRecipientNameOrAddress:
           type: string
-          description: "Shipping Tertiary address information e.g. recipient name,\
-            \ company name or address."
-          example: "ATTN: Accounting Dept"
+          description: Shipping Tertiary address information e.g. recipient name, company name or address.
+          example: 'ATTN: Accounting Dept'
         shippingCity:
           type: string
           description: Shipping City or locality.
@@ -736,15 +1757,12 @@ components:
           example: 30303-0001
         shippingCountry:
           type: string
-          description: "Shipping ISO-3166-1 alpha-2, alpha-3, numeric or full country\
-            \ name."
+          description: Shipping ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
           example: US
         shippingCounty:
           type: string
-          description: "Shipping The 5-digit number or full county name identifying\
-            \ the U.S. county as defined by FIPS, indicating where the transaction\
-            \ occurred."
-          example: "13121"
+          description: Shipping The 5-digit number or full county name identifying the U.S. county as defined by FIPS, indicating where the transaction occurred.
+          example: '13121'
         shippingEmail:
           type: string
           description: Shipping email address
@@ -752,16 +1770,11 @@ components:
         shippingPhoneNumber:
           type: string
           description: Shipping phone number
-          example: "5555555555"
+          example: '5555555555'
         shippingType:
           type: string
           description: Shipping type
           example: SD
-          enum:
-            - SD
-            - ND
-            - 2D
-            - ST
         shippingItems:
           type: array
           description: Shipping Items
@@ -771,19 +1784,74 @@ components:
           type: string
           description: Shipping Order ID
           example: B2987654321qwert
+        totalShippingCost:
+          type: number
+          description: The total amount the customer is paying for shipping the products
+          format: double
+          example: 34.3
+        shippingTimeFrame:
+          type: string
+          description: describes the delivery schedule
+          example: SAME_DAY
+          enum:
+            - ELECTRONIC
+            - SAME_DAY
+            - OVERNIGHT
+            - PRIORITY
+            - GROUND
+            - TO_STORE
+        shippingMethodIndicator:
+          type: string
+          description: describes the relationship of the shipping and billing addresses
+          example: SHIP_TO_CARDHOLDER
+          enum:
+            - SHIP_TO_CARDHOLDER
+            - SHIP_TO_VERIFIED_ADDRESS
+            - SHIP_TO_NON_BILLING_ADDRESS
+            - SHIP_TO_STORE
+            - ELECTRONIC
+            - NOT_SHIPPED
+            - OTHER
+        shippingAddressLastUsageTimestamp:
+          type: integer
+          description: the Timestamp that the customer first used the shipping address, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        shippingAddressFirstUsageDuringThisTransaction:
+          type: boolean
+          description: Set this to true if customer first used the shipping address during this transaction
+          example: true
         orderNumber:
           type: string
           description: Order number set by the merchant
-          example: "123456789"
+          example: '123456789'
+        shipments:
+          type: array
+          description: List of shipments for the transaction
+          items:
+            $ref: '#/components/schemas/Shipment'
+        returnedItems:
+          type: array
+          description: List of returned items for the transaction
+          items:
+            $ref: '#/components/schemas/ShippingItem'
+        refundSubType:
+          type: string
+          description: Instrument where the funds were returned.
+          example: ORIGINAL_PAYMENT_INSTRUMENT
+          enum:
+            - STORE_CREDIT
+            - ORIGINAL_PAYMENT_INSTRUMENT
+            - NEW_PAYMENT_INSTRUMENT
         providerUdf:
           type: object
           additionalProperties:
             type: string
             description: Map that can carry any additional information
-            example: "{\"risky\":\"true\"}"
+            example: '{"risky":"true"}'
           description: Map that can carry any additional information
           example:
-            risky: "true"
+            risky: 'true'
         customerUdf:
           type: object
           additionalProperties:
@@ -810,7 +1878,7 @@ components:
           description: Map that carries custom Merchant Information
         pumpNumber:
           type: integer
-          description: 'Pump Number'
+          description: 'Pump Number '
           format: int32
           example: 4
         purchaseType:
@@ -868,31 +1936,26 @@ components:
         deviceUserAgent:
           type: string
           description: Device user agent
-          example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9\
-            \ (KHTML, like Gecko) Version/9.0.2 Safari/601.3"
+          example: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3
         deviceLanguage:
           type: string
           description: Device language
-          example: "en-US,en;q=0.9"
+          example: en-US,en;q=0.9
         deviceJavaEnabled:
           type: boolean
-          description: A Boolean value that represents the ability of the cardholder
-            browser to execute Java.
+          description: A Boolean value that represents the ability of the cardholder browser to execute Java.
           example: true
         deviceJavaScriptEnabled:
           type: boolean
-          description: A Boolean value that represents represents the ability of the
-            cardholder browser to execute JavaScript.
+          description: A Boolean value that represents represents the ability of the cardholder browser to execute JavaScript.
           example: true
         deviceHeader:
           type: string
-          description: The exact content of the HTTP accept headers sent from the
-            cardholder's browser.
-          example: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+          description: The exact content of the HTTP accept headers sent from the cardholder's browser.
+          example: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
         deviceColorDepth:
           type: integer
-          description: "Value represents the bit depth of the color palette for displaying\
-            \ images, in bits per pixel."
+          description: Value represents the bit depth of the color palette for displaying images, in bits per pixel.
           format: int32
           example: 32
         deviceScreenHeight:
@@ -907,8 +1970,7 @@ components:
           example: 1256
         deviceTimeZone:
           type: integer
-          description: "Time difference between UTC time and the cardholder browser\
-            \ local time, in minutes."
+          description: Time difference between UTC time and the cardholder browser local time, in minutes.
           format: int32
           example: 200
         deviceChannel:
@@ -925,9 +1987,18 @@ components:
           example: ABNSGTARVSFJEOAHS
         tokenType:
           type: string
-          description: The token type and key associated with the tokenized payment
-            account number.
+          description: The token type and key associated with the tokenized payment account number.
           example: L01
+        site:
+          type: string
+          description: Tokenization site.
+          example: site
+        additional3DS:
+          $ref: '#/components/schemas/Additional3DS'
+        processNonSecureTransaction:
+          type: boolean
+          description: Does the merchant allow authorization on a 3DS decline.
+          example: true
         status3DS:
           type: string
           description: 3DS transaction status result.
@@ -942,9 +2013,2495 @@ components:
           type: boolean
           description: Signals whether it is a recurring payment.
           example: true
+        deviceFingerPrintId:
+          type: string
+          description: A unique physical device finger print id
+        devicePhysicalId:
+          type: string
+          description: A unique dev ice physica id
+        customerLoginId:
+          type: string
+          description: A unique customer login id from merchant
+        merchandiseDescription:
+          type: string
+          description: Merchandise Description
+        merchandiseDate:
+          type: string
+          description: Merchandise Date
+        networkTransactionId:
+          type: string
+          description: Network Transaction Id
+        arn:
+          type: string
+          description: Acquirer Reference Number
+        aci:
+          type: string
+          description: A mandatory code used for qualification in the Custom Payment Service(CPS) program as defined by VISA. Upon evaluation, the code may be changed in the response message if provided by Visa
+          enum:
+            - P
+            - I
+            - 'Y'
+            - R
+        merchantResponseType:
+          type: string
+          description: Native Transaction Status
+          example: F2
+        vendorCode:
+          type: string
+          description: Auth Source System
+          example: C
+        frontEndMid:
+          type: string
+          description: Front end MID
+          example: '503'
+        confirmationEmail:
+          type: string
+          description: Email the confirmation details were sent to
+          example: abc@gmail.com
+        confirmationPhone:
+          type: string
+          description: Email the confirmation details were sent to
+          example: '20134561234'
+        merchantPlatformName:
+          type: string
+          description: The name of the merchant's commerce platform
+          example: Salesforce Commerce Cloud
+        merchantPlatformVersion:
+          type: string
+          description: The version of the merchant's commerce platform
+          example: 1.2.4
+        giftCardCount:
+          type: integer
+          description: the number of gift cards that were purchased
+          format: int32
+          example: 3
+        giftCardAmount:
+          type: number
+          description: Total gift card amount
+          format: double
+          example: 45.5
+        giftCardCurrency:
+          type: string
+          description: ISO 3 Currency Format of the gift card
+          example: USD
+          enum:
+            - Unknown
+            - USD
+            - AFN
+            - DZD
+            - ARS
+            - AMD
+            - AWG
+            - AUD
+            - AZN
+            - BSD
+            - BHD
+            - THB
+            - PAB
+            - BBD
+            - BYR
+            - BZD
+            - BMD
+            - VEF
+            - BOB
+            - BRL
+            - BND
+            - BGN
+            - BIF
+            - CAD
+            - CVE
+            - KYD
+            - XOF
+            - XAF
+            - XPF
+            - CLP
+            - COP
+            - KMF
+            - BAM
+            - NIO
+            - CRC
+            - HRK
+            - CUP
+            - CZK
+            - GMD
+            - DKK
+            - MKD
+            - DJF
+            - STD
+            - DOP
+            - VND
+            - XCD
+            - EGP
+            - SVC
+            - ETB
+            - EUR
+            - FKP
+            - FJD
+            - HUF
+            - CDF
+            - GHS
+            - GIP
+            - HTG
+            - PYG
+            - GNF
+            - GWP
+            - GYD
+            - HKD
+            - UAH
+            - ISK
+            - INR
+            - IRR
+            - IQD
+            - JMD
+            - JOD
+            - KES
+            - PGK
+            - LAK
+            - KWD
+            - MWK
+            - ZMK
+            - AOA
+            - MMK
+            - GEL
+            - LVL
+            - LBP
+            - ALL
+            - HNL
+            - SLL
+            - LRD
+            - LYD
+            - SZL
+            - LTL
+            - LSL
+            - MGA
+            - MYR
+            - MUR
+            - MZN
+            - MXN
+            - MXV
+            - MDL
+            - MAD
+            - BOV
+            - NGN
+            - ERN
+            - NAD
+            - NPR
+            - ANG
+            - ILS
+            - RON
+            - TWD
+            - TRY
+            - NZD
+            - BTN
+            - KPW
+            - NOK
+            - PEN
+            - MRO
+            - TOP
+            - PKR
+            - MOP
+            - UYU
+            - PHP
+            - GBP
+            - BWP
+            - QAR
+            - GTQ
+            - ZAR
+            - OMR
+            - KHR
+            - MVR
+            - IDR
+            - RUB
+            - RWF
+            - SHP
+            - SAR
+            - XDR
+            - RSD
+            - SCR
+            - SGD
+            - SBD
+            - KGS
+            - SOS
+            - TJS
+            - LKR
+            - SDG
+            - SRD
+            - SEK
+            - CHF
+            - SYP
+            - BDT
+            - WST
+            - TZS
+            - KZT
+            - TTD
+            - MNT
+            - TND
+            - AED
+            - UGX
+            - COU
+            - CLF
+            - UYI
+            - USN
+            - USS
+            - UZS
+            - VUV
+            - CHE
+            - CHW
+            - KRW
+            - YER
+            - JPY
+            - CNY
+            - PLN
+            - XBA
+            - XTS
+            - XBB
+            - XBD
+            - XBC
+            - XAU
+            - XPD
+            - XPT
+            - XAG
+            - XXX
+            - XFU
+            - TMT
+            - ZWL
+            - CUC
+            - SSP
+            - XUA
+            - XSU
+            - BYN
+            - VES
+            - ZMW
+            - MRU
+            - STN
+            - SLE
+            - VED
+            - UYW
+        preorderIndicator:
+          type: string
+          description: describes the availability
+          example: Available
+          enum:
+            - Available
+            - Future
+        preorderDate:
+          type: string
+          description: the expected availability date in YYYYMMDD format
+          example: '20240417'
+        reorderIndicator:
+          type: string
+          description: describes whether its a first time or reorder
+          example: Reorder
+          enum:
+            - FirstTime
+            - Reorder
+        installmentCount:
+          type: integer
+          description: If the purchase is on an installment plan, this is the number of installment payments that the customer is allowed.
+          format: int32
+          example: 12
+        recurringFrequency:
+          type: integer
+          description: the number of days between recurring transactions
+          format: int32
+          example: 30
+        recurringExpiry:
+          type: string
+          description: date in YYYYMMDD format after which no more recurring transactions will be performed
+          example: '20240417'
+        alternatePayment:
+          type: string
+          description: represents the payment method that the customer used as an alternative (or in addition) to a payment card
+          example: StoreCredit
+          enum:
+            - None
+            - Coupon
+            - GiftCard
+            - StoreCredit
+        sellers:
+          type: array
+          description: Seller information
+          items:
+            $ref: '#/components/schemas/Seller'
+        orderChannel:
+          type: string
+          description: The channel or source where the order was placed.
+          enum:
+            - WEB
+            - PHONE
+            - MOBILE_APP
+            - SOCIAL
+            - MARKETPLACE
+            - IN_STORE_KIOSK
+            - SCAN_AND_GO
+            - SMART_TV
+            - MIT
+        discountCodes:
+          type: array
+          description: List of discount codes and their associated amount or percentage. Each DiscountCode object can be of type 'absolute' for an amount discount or 'percent' for a percent discount
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/DiscountCode'
+              - $ref: '#/components/schemas/AbsoluteDiscountCode'
+              - $ref: '#/components/schemas/PercentDiscountCode'
+        scoringIndicator:
+          type: boolean
+          description: Indicates external scoring is needed
+          example: false
+        enrollmentSuccess:
+          type: boolean
         replay:
           type: boolean
       description: Input for a fraud/velocity check
+    PercentDiscountCode:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/DiscountCode'
+        - type: object
+          properties:
+            percentage:
+              type: number
+              format: double
+    SavedAddress:
+      type: object
+      properties:
+        addressType:
+          type: string
+          description: Indicates whether this is a shipping or billing address.
+          example: Shipping
+          enum:
+            - Shipping
+            - Billing
+        streetAddress:
+          type: string
+          description: Street address.
+          example: 123 Main Street
+        streetAddress2:
+          type: string
+          description: Street address
+          example: Collingwood Lane
+        houseNumberOrName:
+          type: string
+          description: Secondary address information, e.g. house number or name.
+          example: Apt 213
+        recipientNameOrAddress:
+          type: string
+          description: Tertiary address information e.g. recipient name, company name or address.
+          example: 'ATTN: Accounting Dept'
+        city:
+          type: string
+          description: City or locality.
+          example: Sandy Springs
+        stateOrProvince:
+          type: string
+          description: State or province.
+          example: GA
+        stateCleansed:
+          type: string
+          description: State Code.
+          example: GA
+          enum:
+            - Unknown
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - GU
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - PA
+            - PR
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - VI
+            - WA
+            - WV
+            - WI
+            - WY
+            - AB
+            - BC
+            - MB
+            - NB
+            - NL
+            - NT
+            - NS
+            - NU
+            - 'ON'
+            - PE
+            - QC
+            - SK
+            - YT
+        postalCode:
+          type: string
+          description: ZIP code or postal code.
+          example: 30303-0001
+        country:
+          type: string
+          description: ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
+          example: US
+        countryCleansed:
+          type: string
+          description: Normalized Shipping Country Code.
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        county:
+          type: string
+          description: The 5-digit number or full county name identifying the U.S. county as defined by FIPS, indicating where the transaction occurred.
+          example: '13121'
+        email:
+          type: string
+          description: Email address
+          example: recipient@domain.com
+        phone:
+          type: string
+          description: Phone number
+          example: '5555555555'
+      description: An array of addresses added to the account.
+    SavedPayment:
+      required:
+        - billingStreet
+      type: object
+      properties:
+        lastUpdatedTimestamp:
+          type: integer
+          description: The date this payment information was last updated or verified. Formatted as Unix epoch timestamp in ms.
+          format: int64
+          example: 1711300839123
+        billingStreet:
+          type: string
+          description: The name of the Payment Method being added to the Account.
+          example: CREDIT_CARD
+        billingStreet2:
+          type: string
+          description: Billing Street Address
+          example: Jefferson creek
+        billingCity:
+          type: string
+          description: Billing City or locality.
+          example: Sandy Springs
+        billingStateOrProvince:
+          type: string
+          description: Billing State or province.
+          example: GA
+        billingStateCleansed:
+          type: string
+          description: Billing State Code.
+          example: GA
+          enum:
+            - Unknown
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - GU
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - PA
+            - PR
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - VI
+            - WA
+            - WV
+            - WI
+            - WY
+            - AB
+            - BC
+            - MB
+            - NB
+            - NL
+            - NT
+            - NS
+            - NU
+            - 'ON'
+            - PE
+            - QC
+            - SK
+            - YT
+        billingPostalCode:
+          type: string
+          description: Billing ZIP code or postal code.
+          example: 30303-0001
+        billingCountry:
+          type: string
+          description: Billing ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
+          example: US
+        billingCountryCleansed:
+          type: string
+          description: Normalized Billing Country Code.
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        billingCounty:
+          type: string
+          description: Billing The 5-digit number or full county name identifying the U.S. county as defined by FIPS, indicating where the transaction occurred.
+          example: '13121'
+        billingFirstName:
+          type: string
+          description: First name of the recipient
+          example: John
+        billingLastName:
+          type: string
+          description: Last name of the recipient
+          example: Doe
+        scheme:
+          type: string
+          description: Processing card network.
+          example: VISA
+          enum:
+            - UNKNOWN
+            - VISA
+            - MASTERCARD
+            - AMEX
+            - DISCOVER
+            - CUP
+            - DINERS
+            - JCB
+            - PRIVATE
+            - CLOSED_LOOP
+            - EBT
+            - VOYAGER
+            - FLEET
+            - WEX
+            - DEBIT_OTHER
+        cardExpiryMonth:
+          type: integer
+          description: Card Expiry Month
+          format: int32
+          example: 1
+        cardExpiryYear:
+          type: integer
+          description: Card Expiry Year
+          format: int32
+          example: 1000
+        cardData:
+          type: string
+          description: Card Number encrypted via AES. Required if encryptedCardData, acnuFirstSix, and acnuLastFour not provided.
+          example: jRJqrtmxGbCheVhpyJxTXTAVSNFFk2nHwZBsVgBLQA==
+        encryptedCardData:
+          type: string
+          description: Encrypted Credit Card Number via voltage. Required if cardData, acnuFirstSix, and acnuLastFour not provided.
+          example: 371449ODBSR8431
+        acnuFirstSix:
+          type: string
+          description: First six digits of card number. Required if encryptedCardData and cardData not provided."
+          example: '123456'
+        acnuLastFour:
+          type: string
+          description: Last four digits of card number. Required if encryptedCardData and cardData not provided.
+          example: '9876'
+        paymentType:
+          type: string
+          description: Denotes the type of payment used for the transaction.
+          example: PaymentCard
+          enum:
+            - Unknown
+            - ApplePay
+            - GooglePay
+            - SamsungPay
+            - PaymentCard
+            - PaymentToken
+            - NetworkToken
+            - PayPal
+            - WalmartPay
+            - AmazonPay
+            - VisaCheckout
+        routingNumber:
+          type: string
+          description: Routing number of the check from MICR.
+          example: '123456789'
+        authNetwork:
+          type: string
+          description: Identifies the authorization Network (Buypass) used on the transaction.
+          example: Accel
+          enum:
+            - Unknown
+            - Amex
+            - Visa
+            - Master
+            - Discover
+            - Pulse
+            - Accel
+            - Interlink
+            - Jeanie
+            - Maestro
+            - NYCE
+            - CU24
+            - Shazam
+            - EBT
+            - AFFN
+            - Telecheck
+            - Diners
+            - PayPal
+            - ValueLink
+            - Private
+            - Debit
+            - Voyager
+            - ATH
+            - JCB
+            - StarNE
+            - StarSE
+            - StarW
+            - StarAccess
+            - FleetCor
+            - SVS
+            - WEX
+            - Incomm
+            - Interac
+            - NA
+            - Moneris
+            - VaultedCard
+            - PAVD
+            - MCSend
+            - UnionPay
+            - FraudFlex
+            - Certegy
+            - MCI
+            - PaypalVenmo
+            - Conduent
+            - FISG
+            - INMR
+            - PWMB
+            - SOLU
+            - WCHP
+            - AliPay
+            - EFunds
+            - ACS
+      description: An array of payment methods added to the account.
+    Seller:
+      type: object
+      properties:
+        sellerLatitude:
+          type: number
+          description: The location of where the purchase was made. For example, for a taxi driver, the location of the taxi when the fare was paid.
+          format: double
+          example: -1.5459487
+        sellerLongitude:
+          type: number
+          description: The location of where the purchase was made. For example, for the taxi driver, the location of the taxi when the fare was paid.
+          format: double
+          example: 52.2768309
+        sellerOwnerName:
+          type: string
+          description: The Seller's name.
+          example: Betty Smith
+        sellerId:
+          type: string
+          description: Your unique identifier for this Seller's account.
+          example: 23432-dse
+        sellerBusinessName:
+          type: string
+          description: The business name of the seller.
+          example: Awesome Drones Inc.
+        sellerCreatedTimestamp:
+          type: integer
+          description: The timestamp when the seller account was created on your site, formatted as a Unix Epoch timestamp in ms
+          format: int64
+          example: 1711300839123
+        sellerTransactionType:
+          type: string
+          description: Indicates the type of the Seller
+          example: P2M
+          enum:
+            - P2P
+            - P2M
+            - CSH
+        sellerStreet:
+          type: string
+          description: The seller's street number and street name.
+          example: 31 Sherwood Gardens
+        sellerStreet2:
+          type: string
+          description: The seller's secondary address information, such as unit or apartment number.
+          example: Unit 1
+        sellerPhoneNumber:
+          type: string
+          description: The phone number associated with the seller.
+          example: '+442071838750'
+        sellerEmail:
+          type: string
+          description: The primary email address currently associated with the seller.
+          example: myawesomedrones@gmail.com
+        sellerPostalCode:
+          type: string
+          description: The seller's postal code.
+          example: E14 9wn
+        sellerCity:
+          type: string
+          description: The seller's city name.
+          example: London
+        sellerStateOrProvince:
+          type: string
+          description: Seller State or Province.
+          example: Georgia
+        sellerStateCleansed:
+          type: string
+          description: Seller State Code.
+          example: GA
+          enum:
+            - Unknown
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - GU
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - PA
+            - PR
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - VI
+            - WA
+            - WV
+            - WI
+            - WY
+            - AB
+            - BC
+            - MB
+            - NB
+            - NL
+            - NT
+            - NS
+            - NU
+            - 'ON'
+            - PE
+            - QC
+            - SK
+            - YT
+        sellerRegion:
+          type: string
+          description: 'The region of the Seller: APA = Asia Pacific and Australia; Canada = Canada; EMEA = Europe, Middle East and Africa; LA/C = Latin America and Caribbean; USA = United States.'
+          example: EMEA
+        sellerCountryCleansed:
+          type: string
+          description: Normalized Country of seller
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        sellerCountry:
+          type: string
+          description: Seller ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
+          example: US
+        sellerAggregateOrderCount:
+          type: integer
+          description: The total count of orders sold by this seller since it was created, including the current order.
+          format: int64
+          example: 1
+        sellerAggregateOrderDollars:
+          type: number
+          description: The total amount, in US dollars, sold by this seller since it was created, including the current order.
+          format: double
+          example: 9.99
+        sellerDomain:
+          type: string
+          description: The domain of the seller.
+          example: mystore.com
+        sellerLastUpdateTimestamp:
+          type: integer
+          description: The last time a change was made to this seller (e.g. changed email). Formatted as a Unix Epoch timestamp in ms
+          format: int64
+          example: 1711300839123
+        sellerOnboardingEmail:
+          type: string
+          description: The email address associated with this seller account when it was created.
+          example: myawesomedrones@gmail.com
+        sellerOnboardingIpAddress:
+          type: string
+          description: The IP address of the device used when this seller account was created.
+          example: 51.202.206.33
+        sellerParentEntity:
+          type: string
+          description: The unique ID of the parent entity associated with the seller.
+          example: Awesome Drones Inc.
+        sellerTags:
+          type: array
+          description: A list of attributes or short descriptors associated with the seller account.
+          items:
+            type: string
+            description: A list of attributes or short descriptors associated with the seller account.
+        sellerUserName:
+          type: string
+          description: The unique username associated with the seller. This will likely be whatever they use to login to your site. Please supply this even if it is the same as the email address.
+          example: isellawesomedrones
+        sellerParentEntityId:
+          type: string
+          description: The unique ID of the seller generated by the parent entity.
+          example: '3732692146'
+      description: Seller information
+    Shipment:
+      type: object
+      properties:
+        shippingStreet:
+          type: string
+          description: Shipping Street address.
+          example: 123 Main Street
+        shippingStreet2:
+          type: string
+          description: Shipping Street address
+          example: Collingwood Lane
+        shippingRecipientNameOrAddress:
+          type: string
+          description: Shipping Tertiary address information e.g. recipient name, company name or address.
+          example: 'ATTN: Accounting Dept'
+        shippingCity:
+          type: string
+          description: Shipping City or locality.
+          example: Sandy Springs
+        shippingStateOrProvince:
+          type: string
+          description: Shipping State or province.
+          example: GA
+        shippingStateCleansed:
+          type: string
+          description: Shipping State Code.
+          example: GA
+          enum:
+            - Unknown
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - GU
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - PA
+            - PR
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - VI
+            - WA
+            - WV
+            - WI
+            - WY
+            - AB
+            - BC
+            - MB
+            - NB
+            - NL
+            - NT
+            - NS
+            - NU
+            - 'ON'
+            - PE
+            - QC
+            - SK
+            - YT
+        shippingPostalCode:
+          type: string
+          description: Shipping ZIP code or postal code.
+          example: 30303-0001
+        shippingCountry:
+          type: string
+          description: Shipping ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
+          example: US
+        shippingCountryCleansed:
+          type: string
+          description: Normalized Shipping Country Code.
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        shippingCounty:
+          type: string
+          description: Shipping The 5-digit number or full county name identifying the U.S. county as defined by FIPS, indicating where the transaction occurred.
+          example: '13121'
+        shippingEmail:
+          type: string
+          description: Shipping email address
+          example: recipient@domain.com
+        shippingPhoneNumber:
+          type: string
+          description: Shipping phone number
+          example: '5555555555'
+        shippingType:
+          type: string
+          description: Shipping type
+          example: SD
+        shippingItems:
+          type: array
+          description: Shipping Items
+          items:
+            $ref: '#/components/schemas/ShippingItem'
+        shippingOrderId:
+          type: string
+          description: Shipping Order ID
+          example: B2987654321qwert
+        originLocationId:
+          type: string
+          description: Merchant's internal unique identifier for the location, such as a store or a fulfillment center.
+          example: boise-store-24
+        originStreet:
+          type: string
+          description: The street number and street name for the shipment origin.
+          example: 31 Sherwood Gardens
+        originStreet2:
+          type: string
+          description: The unit or apartment for the shipment origin.
+          example: Unit A
+        originPostalCode:
+          type: string
+          description: The postal code for the shipment origin.
+          example: 30303-0001
+        originCity:
+          type: string
+          description: The city of the shipment origin.
+          example: Sandy Springs
+        originStateOrProvince:
+          type: string
+          description: The state or province of the shipment origin.
+          example: GA
+        originStateCleansed:
+          type: string
+          description: The normalized state or province code of the shipment origin.
+          example: GA
+          enum:
+            - Unknown
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - GU
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - PA
+            - PR
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - VI
+            - WA
+            - WV
+            - WI
+            - WY
+            - AB
+            - BC
+            - MB
+            - NB
+            - NL
+            - NT
+            - NS
+            - NU
+            - 'ON'
+            - PE
+            - QC
+            - SK
+            - YT
+        originCountry:
+          type: string
+          description: Shipping origin ISO-3166-1 alpha-2, alpha-3, numeric or full country name.
+          example: US
+        originCountryCleansed:
+          type: string
+          description: Normalized shipping origin Country Code.
+          example: USA
+          enum:
+            - Unknown
+            - USA
+            - AFG
+            - ALB
+            - DZA
+            - AND
+            - AGO
+            - ATG
+            - AZE
+            - ARG
+            - AUS
+            - AUT
+            - BHS
+            - BHR
+            - BGD
+            - ARM
+            - BRB
+            - BEL
+            - BMU
+            - BTN
+            - BOL
+            - BIH
+            - BWA
+            - BRA
+            - BLZ
+            - SLB
+            - VGB
+            - BRN
+            - BGR
+            - MMR
+            - BLR
+            - KHM
+            - CMR
+            - CAN
+            - CPV
+            - CYM
+            - LKA
+            - TCD
+            - CHL
+            - CHN
+            - TWN
+            - COL
+            - COM
+            - MYT
+            - COG
+            - COD
+            - COK
+            - CRI
+            - HRV
+            - CUB
+            - CYP
+            - CZE
+            - BEN
+            - DNK
+            - DMA
+            - DOM
+            - ECU
+            - SLV
+            - GNQ
+            - ETH
+            - ERI
+            - EST
+            - FRO
+            - FJI
+            - FIN
+            - FRA
+            - GUF
+            - PYF
+            - DJI
+            - GEO
+            - GMB
+            - PSE
+            - DEU
+            - GHA
+            - GIB
+            - GRC
+            - GRD
+            - GLP
+            - GUM
+            - GTM
+            - GIN
+            - GUY
+            - VAT
+            - HND
+            - HKG
+            - HUN
+            - ISL
+            - IND
+            - IDN
+            - IRQ
+            - IRL
+            - ISR
+            - ITA
+            - CIV
+            - JAM
+            - JPN
+            - KAZ
+            - JOR
+            - KEN
+            - KOR
+            - KWT
+            - KGZ
+            - LAO
+            - LBN
+            - LSO
+            - LVA
+            - LBR
+            - LIE
+            - LTU
+            - LUX
+            - MAC
+            - MDG
+            - MWI
+            - MYS
+            - MDV
+            - MLT
+            - MTQ
+            - MRT
+            - MUS
+            - MEX
+            - MCO
+            - MNG
+            - MDA
+            - MNE
+            - MSR
+            - MAR
+            - MOZ
+            - OMN
+            - NAM
+            - NPL
+            - NLD
+            - CUW
+            - ABW
+            - SXM
+            - BES
+            - NCL
+            - VUT
+            - NZL
+            - NIC
+            - NGA
+            - NOR
+            - PLW
+            - PAK
+            - PAN
+            - PNG
+            - PRY
+            - PER
+            - PHL
+            - POL
+            - PRT
+            - PRI
+            - QAT
+            - REU
+            - ROU
+            - RUS
+            - RWA
+            - KNA
+            - AIA
+            - LCA
+            - VCT
+            - SMR
+            - SAU
+            - SEN
+            - SRB
+            - SYC
+            - SLE
+            - SGP
+            - SVK
+            - VNM
+            - SVN
+            - SOM
+            - ZAF
+            - ZWE
+            - ESP
+            - SUR
+            - SWZ
+            - SWE
+            - CHE
+            - TJK
+            - THA
+            - TGO
+            - TTO
+            - ARE
+            - TUN
+            - TUR
+            - TCA
+            - UGA
+            - UKR
+            - MKD
+            - EGY
+            - GBR
+            - GGY
+            - JEY
+            - IMN
+            - TZA
+            - VIR
+            - BFA
+            - ASM
+            - BDI
+            - CAF
+            - SGS
+            - GAB
+            - KIR
+            - GRL
+            - HTI
+            - LBY
+            - MLI
+            - NRU
+            - ANT
+            - NER
+            - MNP
+            - UMI
+            - FSM
+            - GNB
+            - TLS
+            - BLM
+            - STP
+            - SSD
+            - TON
+            - TKM
+            - URY
+            - UZB
+            - VEN
+            - WSM
+            - YEM
+            - ZMB
+            - ATA
+            - BVT
+            - CXR
+            - CCK
+            - FLK
+            - ALA
+            - ATF
+            - HMD
+            - IRN
+            - PRK
+            - NIU
+            - NFK
+            - MHL
+            - PCN
+            - SHN
+            - MAF
+            - SPM
+            - SDN
+            - ESH
+            - SJM
+            - SYR
+            - TKL
+            - TUV
+            - WLF
+            - IOT
+            - ROM
+            - ZAR
+            - TMP
+            - QZZ
+        fulfillmentMethod:
+          type: string
+          description: Fulfillment method for the shipment.
+          example: DELIVERY
+          enum:
+            - DELIVERY
+            - COUNTER_PICKUP
+            - CURBSIDE_PICKUP
+            - LOCKER_PICKUP
+            - STANDARD_SHIPPING
+            - EXPEDITED_SHIPPING
+            - GAS_PICKUP
+            - SCHEDULED_DELIVERY
+        shippingTimeFrame:
+          type: string
+          description: describes the delivery schedule
+          example: SAME_DAY
+          enum:
+            - ELECTRONIC
+            - SAME_DAY
+            - OVERNIGHT
+            - PRIORITY
+            - GROUND
+            - TO_STORE
+        shippingMethodIndicator:
+          type: string
+          description: describes the relationship of the shipping and billing addresses
+          example: SHIP_TO_CARDHOLDER
+          enum:
+            - SHIP_TO_CARDHOLDER
+            - SHIP_TO_VERIFIED_ADDRESS
+            - SHIP_TO_NON_BILLING_ADDRESS
+            - SHIP_TO_STORE
+            - ELECTRONIC
+            - NOT_SHIPPED
+            - OTHER
+        shippingAddressLastUsageTimestamp:
+          type: integer
+          description: the Timestamp that the customer first used the shipping address, in Epoch format in ms
+          format: int64
+          example: 1711300839123
+        shippingAddressFirstUsageDuringThisTransaction:
+          type: boolean
+          description: Set this to true if customer first used the shipping address during this transaction
+          example: true
+      description: List of shipments for the transaction
     ShippingItem:
       type: object
       properties:
@@ -980,7 +4537,7 @@ components:
         sku:
           type: string
           description: Shipping item sku
-          example: "10100110110"
+          example: '10100110110'
         currency:
           type: string
           description: Shipping item currency
@@ -989,7 +4546,64 @@ components:
           type: string
           description: Shipping item subtype
           example: Equipment
-      description: Shipping Items
+        itemIsDigital:
+          type: boolean
+          description: Indicates whether the item is electronically delivered e.g. gift cards. If not provided, defaults to false.
+          example: true
+        returnReason:
+          type: string
+          description: The reason that the buyer is making this attempt return for the item.
+          example: BETTER_PRICE_AVAILABLE
+          enum:
+            - BETTER_PRICE_AVAILABLE
+            - BOUGHT_BY_MISTAKE
+            - CANCELATION
+            - DID_NOT_AUTHORIZE
+            - DUPLICATE_ORDER
+            - ITEM_ARRIVED_TOO_LATE
+            - ITEM_NOT_RECEIVED
+            - NO_LONGER_NEEDED
+            - ITEM_DAMAGED
+            - SIGNIFICANTLY_NOT_AS_DESCRIBED
+            - ORDER_ERROR
+            - CANCELLED_BY_ISSUER
+            - LOST
+            - OTHER
+        subscriptionId:
+          type: string
+          description: A unique identifier for the subscription itself. There can be many products associated with a single subscriptionId.
+          example: 97c56c86-7984-44fa-9a3e-7d5f34d1bead
+        subscriptionNextDeliveryTimestamp:
+          type: integer
+          description: The expected delivery timestamp, following this one. As a Unix epoch timestamp in ms.
+          format: int64
+          example: 1711300839123
+        subscriptionPeriodUnit:
+          type: string
+          description: Frequency of the given subscription.
+          example: Day
+          enum:
+            - Day
+            - Week
+            - Month
+            - Quarter
+            - Year
+        subscriptionTotalPeriods:
+          type: integer
+          description: Total subscription term expressed as a number of periodUnits. If the subscription does not have a defined end, then do not include this field.
+          format: int32
+          example: 1
+        subscriptionRegularItemPrice:
+          type: number
+          description: What the product's price would be if it was purchased as a one-time purchase, rather than as a subscription.
+          format: double
+          example: 49.99
+        subscriptionCurrentPeriod:
+          type: integer
+          description: The current subscription period that the recurring order belongs to (1st month, 3rd quarter, etc.).
+          format: int32
+          example: 1
+      description: List of returned items for the transaction
     ExternalResponse:
       type: object
       properties:
