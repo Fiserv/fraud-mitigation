@@ -2,7 +2,7 @@
 
 ---
 
-Integrate with the scoring solution and leverage machine learning based models for improved fraud detection.
+<div>Integrate with the scoring solution and leverage machine learning based models for improved fraud detection.</div>>
 
 ---
 
@@ -65,7 +65,7 @@ Integrate with the scoring solution and leverage machine learning based models f
                 width: 50%;
         }
 
-.markdown-body div {
+        .markdown-body div {
                 margin-left: auto;
                 margin-right: auto;
                 width: 50%;
