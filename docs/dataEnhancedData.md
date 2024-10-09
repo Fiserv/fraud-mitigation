@@ -1,4 +1,4 @@
-# Data – Enhanced Data
+<h1>Data – Enhanced Data</h1>
 
 ---
 
@@ -48,6 +48,9 @@
 </table>
 
 <style>
+        .markdown-body h1 {
+                text-align: center;
+        }
         .markdown-body table {
                 margin-left: auto;
                 margin-right: auto;

@@ -1,4 +1,4 @@
-# Data – Standalone
+<h1> Data – Standalone</h1>
 
 ---
 
@@ -52,19 +52,20 @@
     </tr>
 </table>
 <style>
+        .markdown-body h1 {
+                text-align: center;
+        }
         .markdown-body table {
                 margin-left: auto;
                 margin-right: auto;
                 border-collapse: collapse;
                 width: 50%;
         }
-
-.markdown-body div {
+        .markdown-body div {
                 margin-left: auto;
                 margin-right: auto;
                 width: 50%;
         }
-
         th, td {
                 text-align: center;
                 border: 1px solid break;
