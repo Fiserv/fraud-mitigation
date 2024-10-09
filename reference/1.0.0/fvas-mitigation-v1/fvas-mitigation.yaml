@@ -43,7 +43,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/FraudVASResponse'
         '400':
           description: Bad request. Validation exception.
           content:
@@ -56,6 +56,8 @@ paths:
             application/json:
               schema:
                 type: string
+      x-proxy-name: preEvaluate
+      x-group-name: Gateway
   /{gatewayName}/post-evaluate/clientID/{clientID}:
     post:
       tags:
@@ -85,7 +87,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/FraudVASResponse'
         '400':
           description: Bad request. Validation exception.
           content:
@@ -98,6 +100,8 @@ paths:
             application/json:
               schema:
                 type: string
+      x-proxy-name: postEvaluate
+      x-group-name: Gateway
 components:
   schemas:
     AbsoluteDiscountCode:
