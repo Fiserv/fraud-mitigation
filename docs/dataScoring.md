@@ -57,7 +57,7 @@
 <style>
         .markdown-body h1 {
                 text-align: center;
-        }   
+        }
         .markdown-body table {
                 margin-left: auto;
                 margin-right: auto;
@@ -65,7 +65,7 @@
                 width: 50%;
         }
 
-        .markdown-body div {
+.markdown-body div {
                 margin-left: auto;
                 margin-right: auto;
                 width: 50%;
