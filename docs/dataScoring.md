@@ -1,4 +1,4 @@
-# Data – Scoring
+<h1> Data – Scoring</h1>
 
 ---
 
@@ -55,6 +55,9 @@ Integrate with the scoring solution and leverage machine learning based models f
 
 
 <style>
+        .markdown-body h1 {
+                text-align: center;
+        }   
         .markdown-body table {
                 margin-left: auto;
                 margin-right: auto;
