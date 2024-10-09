@@ -51,7 +51,7 @@
                 margin-left: auto;
                 margin-right: auto;
                 border-collapse: collapse;
-                width: 50%;
+                width: 100%;
         }
 
 .markdown-body div {
