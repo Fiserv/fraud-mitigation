@@ -14,22 +14,23 @@
     </tr>
     <tr class="highlight">
         <td>ClientId</td>
-        <td>IP address</td>
+        <td>Email</td>
     </tr>
     <tr class="light">
         <td>ApiTraceId</td>
-        <td>Billing Address</td>
+        <td>IP address</td>
     </tr>
     <tr class="highlight">
         <td>Transaction Type</td>
-        <td>Customer Data</td>
+        <td>Billing Address</td>
     </tr>
     <tr class="light">
         <td>Transaction Time</td>
-        <td>Device Data</td>
+        <td>Customer Data</td>
     </tr>
     <tr class="highlight">
         <td>Currency</td>
+        <td>Device Data</td>
     </tr>
     <tr class="light">
         <td>Total</td>
