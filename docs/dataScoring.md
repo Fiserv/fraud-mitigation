@@ -6,7 +6,7 @@
 
 ---
 
-<table class="center">
+<table>
     <tr>
         <th>Required</th>
         <th>Recommended</th>
@@ -57,6 +57,12 @@
 <style>
         .markdown-body h1 {
                 text-align: center;
+        }
+        .markdown-body table {
+                margin-left: auto;
+                margin-right: auto;
+                border-collapse: collapse;
+                width: 50%;
         }
         .center {
             margin-left: auto;
